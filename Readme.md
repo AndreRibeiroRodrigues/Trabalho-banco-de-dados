@@ -6,7 +6,7 @@ Este projeto é uma aplicação em Python com integração a banco de dados SQL 
 
 Abaixo está o diagrama do banco de dados utilizado neste projeto:
 
-![Diagrama da Biblioteca](./biblioteca.png)
+![Diagrama da Biblioteca]([./biblioteca.png](https://github.com/AndreRibeiroRodrigues/Trabalho-banco-de-dados/blob/main/Biblioteca.png))
 
 ## Tecnologias Utilizadas
 
