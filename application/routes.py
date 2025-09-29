@@ -21,7 +21,7 @@ def paginaInicial():
 
 @bp.route('/contato')
 def contato():
-    return '<h2>Página Contato</h2><p>Entre em contato pelo email:
+    return '<h2>Página Contato</h2><p>Entre em contato pelo email:'
 
 
 @bp.route('/sobre')
