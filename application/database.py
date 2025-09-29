@@ -49,3 +49,15 @@ def get_contagem_tabelas():
     # Exemplo de uso:
     # init_db()
     conn.close()
+
+
+def inserir_dados():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    base_dir = os.path.dirname(__file__)
+    schema_path = os.path.join(base_dir, 'dados.sql')
+    with open(schema_path) as f:
+        schema = f.read()
+    cursor.executescript(schema)
+    conn.commit()
+    conn.close()

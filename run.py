@@ -1,5 +1,5 @@
 from application import create_app, database
-from application.database import init_db
+from application.database import init_db, inserir_dados
 
 app = create_app()
 

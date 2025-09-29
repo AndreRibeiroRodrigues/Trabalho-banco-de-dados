@@ -14,6 +14,8 @@ def index():
 
 @bp.route('/paginaInicial')
 def paginaInicial():
+    database.inserir_dados()
+    print('Dados inseridos com sucesso!')
     return render_template('paginaInicial.html')
 
 
