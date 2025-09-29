@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 
 def get_db_connection():
@@ -18,7 +19,9 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
-    with open('schema.sql') as f:
+    base_dir = os.path.dirname(__file__)
+    schema_path = os.path.join(base_dir, 'schema.sql')
+    with open(schema_path) as f:
         schema = f.read()
     cursor.executescript(schema)
     conn.commit()

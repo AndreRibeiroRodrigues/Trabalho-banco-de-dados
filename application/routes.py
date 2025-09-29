@@ -3,9 +3,16 @@ import sqlite3
 
 bp = Blueprint('main', __name__)
 
+
 @bp.route('/')
 def index():
     return render_template('index.html')
+
+
+@bp.route('/paginaInicial')
+def paginaInicial():
+    return render_template('paginaInicial.html')
+
 
 @bp.route('/sobre')
 def sobre():
