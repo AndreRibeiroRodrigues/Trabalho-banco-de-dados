@@ -14,3 +14,14 @@ def get_db_connection():
 # rows = cursor.fetchall()
 # conn.close()
 # Lembre-se de fechar a conexão quando terminar.
+
+def init_db():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    with open('schema.sql') as f:
+        schema = f.read()
+    cursor.executescript(schema)
+    conn.commit()
+    conn.close()
+# A função init_db() inicializa o banco de dados executando um script SQL a partir de um arquivo chamado schema.sql.
+# Certifique-se de ter um arquivo schema.sql no mesmo diretório com a estrutura do banco
