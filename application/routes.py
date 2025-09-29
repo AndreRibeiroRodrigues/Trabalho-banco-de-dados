@@ -19,6 +19,11 @@ def paginaInicial():
     return render_template('paginaInicial.html')
 
 
+@bp.route('/contato')
+def contato():
+    return '<h2>Página Contato</h2><p>Entre em contato pelo email:
+
+
 @bp.route('/sobre')
 def sobre():
     return '<h2>Página Sobre</h2><p>Esse site foi feito em Flask!</p>'
