@@ -12,6 +12,9 @@ Abaixo está o diagrama do banco de dados utilizado neste projeto:
 
 - Python
 - SQL
+- HTML
+- CSS
+- JavaScript
 
 ## Como executar
 

@@ -1,58 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Apresentação</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Biblioteca Escolar</title>
+    <link rel="stylesheet" href="app/globals.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <div class="card shadow-lg p-4 text-center" style="max-width: 650px; width: 100%;">
-        <!-- Título -->
-        <div class="card-header bg-primary text-white rounded">
-            <h1 class="h3 mb-0">Sistema de Biblioteca Escolar</h1>
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #f4ede4;
+            color: #3a2f2a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #8b6f47, #a67c52);
+            color: #faf6f0;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid #6b5d52;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .nav {
+            background-color: #d4c4b0;
+            padding: 1rem;
+            border-bottom: 2px solid #8b6f47;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: #3a2f2a;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background-color: #faf6f0;
+            border: 2px solid #8b6f47;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav a:hover {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b6f47;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px double #8b6f47;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-member {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid #d4c4b0;
+            pointer-events: none;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #8b6f47;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member h3 {
+            color: #8b6f47;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member p {
+            color: #6b5d52;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .teacher-section {
+            background-color: #e8dfd5;
+            border: 3px double #8b6f47;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .teacher-card {
+            background-color: #faf6f0;
+            border: 3px solid #8b6f47;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .teacher-card img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #8b6f47;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .teacher-card h3 {
+            color: #8b6f47;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .teacher-card p {
+            color: #3a2f2a;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .footer {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #6b5d52;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📚 Sistema de Biblioteca Escolar</h1>
+        <p>Gestão Completa de Acervo e Empréstimos</p>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="emprestimos.html">Empréstimos</a></li>
+            <li><a href="alunos.html">Alunos</a></li>
+            <li><a href="relatorios.html">Relatórios</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Equipe de Desenvolvimento</h2>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="André.png" alt="Estudante 1">
+                <h3>André Ribeiro Rodrigues</h3>
+                <p>Analista de Sistemas</p>
+            </div>
+
+            <div class="team-member">
+                <img src="Bernardo.png" alt="Estudante 2">
+                <h3>Bernardo Zorzanelli Mendes</h3>
+                <p>Desenvolvedor Backend</p>
+            </div>
+
+            <div class="team-member">
+                <img src="Breno.png" alt="Estudante 3">
+                <h3>Breno Porto Caparrosa</h3>
+                <p>Desenvolvedor Backend</p>
+            </div>
+
+            <div class="team-member">
+                <img src="Rhyan.png" alt="Estudante 4">
+                <h3>Rhyan Franca Borsoneli Silva</h3>
+                <p>Desenvolvedor Backend</p>
+            </div>
+
+            <div class="team-member">
+                <img src="Samy.PNG" alt="Estudante 5">
+                <h3>Samyla Silva Passos</h3>
+                <p>Desenvolvedora Frontend</p>
+            </div>
         </div>
 
-        <div class="card-body">
-            <!-- Subtítulo -->
-            <h2 class="h5 text-secondary mb-4">Total de registros existentes</h2>
-
-            <!-- Contadores -->
-            <div class="mb-3">
-                <p class="mb-1">📚 Livros: <strong>{{livros}}</strong></p>
-                <p class="mb-1">👨‍🎓 Alunos: <strong>{{alunos}}</strong></p>
-                <p class="mb-1">📖 Empréstimos: <strong>{{emprestimos}}</strong></p>
-            </div>
-
-            <!-- Integrantes -->
-            <div class="border-top pt-3 mt-3">
-                <h3 class="h6 text-primary">Criado por:</h3>
-                <p class="mb-0">Andre Ribeiro Rodrigues</p>
-                <p class="mb-0">Samyla Silva Passos</p>
-                <p class="mb-0">Bernardo Zorzanelli Mendes</p>
-                <p class="mb-0">Breno Porto Caparrosa</p>
-                <p class="mb-0">Rhyan France</p>
-            </div>
-
-            <!-- Disciplina -->
-            <div class="border-top pt-3 mt-3 text-muted">
-                <p class="mb-0">Disciplina: Desenvolvimento Web</p>
-                <p class="mb-0">Professor: Marcos Vinicius</p>
-                <p class="mb-0">Período: 2025/2</p>
-            </div>
-
-            <!-- Botão para voltar à página inicial -->
-            <div class="mt-4">
-                <a href="{{ url_for('main.paginaInicial') }}" class="btn btn-primary btn-lg">
-                    Página Inicial
-                </a>
+        <div class="teacher-section">
+            <h2 class="section-title">Orientação do Projeto</h2>
+            <div class="teacher-card">
+                <img src="Professor.png" alt="Professor">
+                <h3>Prof. Howard Cruz Roatti</h3>
+                <p>Orientador do Projeto</p>
+                <p style="font-style: italic; margin-top: 0.5rem; font-size: 0.9rem;">
+                    Departamento de Ciência da Computação
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS (opcional) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <footer class="footer">
+        <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
+    </footer>
 </body>
-</html>
 </html>

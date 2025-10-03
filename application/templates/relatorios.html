@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Biblioteca Escolar</title>
+    <link rel="stylesheet" href="app/globals.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #f4ede4;
+            color: #3a2f2a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #8b6f47, #a67c52);
+            color: #faf6f0;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid #6b5d52;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            background-color: #d4c4b0;
+            padding: 1rem;
+            border-bottom: 2px solid #8b6f47;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: #3a2f2a;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background-color: #faf6f0;
+            border: 2px solid #8b6f47;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav a:hover, .nav a.active {
+            background-color: #8b6f47;
+            color: #faf6f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b6f47;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px double #8b6f47;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid #d4c4b0;
+            pointer-events: none;
+        }
+
+        .stat-card h3 {
+            color: #8b6f47;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #3a2f2a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b5d52;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .report-section {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-section h3 {
+            color: #8b6f47;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #d4c4b0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8b6f47;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d4c4b0;
+            background-color: #faf6f0;
+            color: #3a2f2a;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #8b6f47;
+            background-color: #8b6f47;
+            color: #faf6f0;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #a67c52;
+            border-color: #a67c52;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #d4c4b0;
+            border-color: #d4c4b0;
+            color: #3a2f2a;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8dfd5;
+            border-color: #e8dfd5;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #6b5d52;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d4c4b0;
+            background-color: #faf6f0;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f4ede4;
+        }
+
+        tr:hover td {
+            background-color: #e8dfd5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-atrasado {
+            background-color: #e89090;
+            color: #6b1f1f;
+            border: 1px solid #d46f6f;
+        }
+
+        .status-ativo {
+            background-color: #90c695;
+            color: #1e4620;
+            border: 1px solid #6b9e6f;
+        }
+
+        .footer {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #6b5d52;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📊 Relatórios e Estatísticas</h1>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="emprestimos.html">Empréstimos</a></li>
+            <li><a href="alunos.html">Alunos</a></li>
+            <li><a href="relatorios.html" class="active">Relatórios</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Painel de Controle</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de Livros</h3>
+                <div class="stat-number">247</div>
+                <p class="stat-label">no acervo</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Empréstimos Ativos</h3>
+                <div class="stat-number">42</div>
+                <p class="stat-label">em circulação</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Livros Atrasados</h3>
+                <div class="stat-number">8</div>
+                <p class="stat-label">pendentes de devolução</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Alunos Cadastrados</h3>
+                <div class="stat-number">156</div>
+                <p class="stat-label">usuários ativos</p>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>📚 Relatório de Livros Emprestados</h3>
+            <div class="controls">
+                <div class="form-group">
+                    <label for="dataInicio">Data Início</label>
+                    <input type="date" id="dataInicio">
+                </div>
+                <div class="form-group">
+                    <label for="dataFim">Data Fim</label>
+                    <input type="date" id="dataFim">
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria">
+                        <option value="">Todas</option>
+                        <option value="ficcao">Ficção</option>
+                        <option value="nao-ficcao">Não-Ficção</option>
+                        <option value="didatico">Didático</option>
+                        <option value="referencia">Referência</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; align-items: end;">
+                    <button class="btn" onclick="gerarRelatorioEmprestados()">Gerar Relatório</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="tabelaEmprestados">
+                    <thead>
+                        <tr>
+                            <th>Livro</th>
+                            <th>Autor</th>
+                            <th>Categoria</th>
+                            <th>Aluno</th>
+                            <th>Data Empréstimo</th>
+                            <th>Data Devolução</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>O Cortiço</td>
+                            <td>Aluísio Azevedo</td>
+                            <td>Ficção</td>
+                            <td>Maria Silva</td>
+                            <td>15/01/2025</td>
+                            <td>29/01/2025</td>
+                            <td><span class="status-badge status-ativo">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Capitães da Areia</td>
+                            <td>Jorge Amado</td>
+                            <td>Ficção</td>
+                            <td>João Santos</td>
+                            <td>10/01/2025</td>
+                            <td>24/01/2025</td>
+                            <td><span class="status-badge status-atrasado">Atrasado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Grande Sertão: Veredas</td>
+                            <td>Guimarães Rosa</td>
+                            <td>Ficção</td>
+                            <td>Pedro Oliveira</td>
+                            <td>20/01/2025</td>
+                            <td>03/02/2025</td>
+                            <td><span class="status-badge status-ativo">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>A Moreninha</td>
+                            <td>Joaquim Manuel de Macedo</td>
+                            <td>Ficção</td>
+                            <td>Ana Costa</td>
+                            <td>18/01/2025</td>
+                            <td>01/02/2025</td>
+                            <td><span class="status-badge status-ativo">Ativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Iracema</td>
+                            <td>José de Alencar</td>
+                            <td>Ficção</td>
+                            <td>Carlos Mendes</td>
+                            <td>08/01/2025</td>
+                            <td>22/01/2025</td>
+                            <td><span class="status-badge status-atrasado">Atrasado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>⚠️ Relatório de Livros Atrasados</h3>
+            <div class="controls">
+                <div class="form-group">
+                    <label for="diasAtraso">Dias de Atraso Mínimo</label>
+                    <select id="diasAtraso">
+                        <option value="0">Todos</option>
+                        <option value="1">1+ dias</option>
+                        <option value="7">7+ dias</option>
+                        <option value="14">14+ dias</option>
+                        <option value="30">30+ dias</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="turmaFiltro">Turma</label>
+                    <select id="turmaFiltro">
+                        <option value="">Todas</option>
+                        <option value="6a">6º Ano A</option>
+                        <option value="6b">6º Ano B</option>
+                        <option value="7a">7º Ano A</option>
+                        <option value="7b">7º Ano B</option>
+                        <option value="8a">8º Ano A</option>
+                        <option value="8b">8º Ano B</option>
+                        <option value="9a">9º Ano A</option>
+                        <option value="9b">9º Ano B</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; align-items: end;">
+                    <button class="btn" onclick="gerarRelatorioAtrasados()">Gerar Relatório</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="tabelaAtrasados">
+                    <thead>
+                        <tr>
+                            <th>Livro</th>
+                            <th>Aluno</th>
+                            <th>Turma</th>
+                            <th>Data Empréstimo</th>
+                            <th>Data Devolução</th>
+                            <th>Dias de Atraso</th>
+                            <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Capitães da Areia</td>
+                            <td>João Santos</td>
+                            <td>9º Ano B</td>
+                            <td>10/01/2025</td>
+                            <td>24/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">6 dias</td>
+                            <td>(11) 97654-3210</td>
+                        </tr>
+                        <tr>
+                            <td>Iracema</td>
+                            <td>Carlos Mendes</td>
+                            <td>7º Ano A</td>
+                            <td>08/01/2025</td>
+                            <td>22/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">8 dias</td>
+                            <td>(11) 96543-2109</td>
+                        </tr>
+                        <tr>
+                            <td>O Alienista</td>
+                            <td>Fernanda Lima</td>
+                            <td>8º Ano A</td>
+                            <td>05/01/2025</td>
+                            <td>19/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">11 dias</td>
+                            <td>(11) 95432-1098</td>
+                        </tr>
+                        <tr>
+                            <td>Vidas Secas</td>
+                            <td>Roberto Silva</td>
+                            <td>9º Ano A</td>
+                            <td>12/01/2025</td>
+                            <td>26/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">4 dias</td>
+                            <td>(11) 94321-0987</td>
+                        </tr>
+                        <tr>
+                            <td>A Hora da Estrela</td>
+                            <td>Juliana Costa</td>
+                            <td>8º Ano B</td>
+                            <td>03/01/2025</td>
+                            <td>17/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">13 dias</td>
+                            <td>(11) 93210-9876</td>
+                        </tr>
+                        <tr>
+                            <td>Quincas Borba</td>
+                            <td>Marcos Oliveira</td>
+                            <td>7º Ano B</td>
+                            <td>14/01/2025</td>
+                            <td>28/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">2 dias</td>
+                            <td>(11) 92109-8765</td>
+                        </tr>
+                        <tr>
+                            <td>São Bernardo</td>
+                            <td>Patricia Santos</td>
+                            <td>6º Ano A</td>
+                            <td>01/01/2025</td>
+                            <td>15/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">15 dias</td>
+                            <td>(11) 91098-7654</td>
+                        </tr>
+                        <tr>
+                            <td>Memórias de um Sargento de Milícias</td>
+                            <td>Ricardo Ferreira</td>
+                            <td>6º Ano B</td>
+                            <td>07/01/2025</td>
+                            <td>21/01/2025</td>
+                            <td style="color: #d46f6f; font-weight: bold;">9 dias</td>
+                            <td>(11) 90987-6543</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>📈 Estatísticas Adicionais</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: #8b6f47; margin-bottom: 1rem;">Livros Mais Emprestados</h4>
+                    <ol style="padding-left: 1.5rem; line-height: 2;">
+                        <li>Dom Casmurro - 23 empréstimos</li>
+                        <li>O Cortiço - 19 empréstimos</li>
+                        <li>Capitães da Areia - 17 empréstimos</li>
+                        <li>Grande Sertão: Veredas - 15 empréstimos</li>
+                        <li>Memórias Póstumas - 14 empréstimos</li>
+                    </ol>
+                </div>
+                <div>
+                    <h4 style="color: #8b6f47; margin-bottom: 1rem;">Alunos Mais Ativos</h4>
+                    <ol style="padding-left: 1.5rem; line-height: 2;">
+                        <li>Maria Silva - 12 empréstimos</li>
+                        <li>João Santos - 10 empréstimos</li>
+                        <li>Ana Costa - 9 empréstimos</li>
+                        <li>Pedro Oliveira - 8 empréstimos</li>
+                        <li>Carlos Mendes - 7 empréstimos</li>
+                    </ol>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-secondary" onclick="exportarRelatorio()">📄 Exportar para PDF</button>
+                <button class="btn btn-secondary" onclick="imprimirRelatorio()">🖨️ Imprimir</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Set default dates (last 30 days)
+        const hoje = new Date();
+        const trintaDiasAtras = new Date();
+        trintaDiasAtras.setDate(hoje.getDate() - 30);
+
+        document.getElementById('dataInicio').value = trintaDiasAtras.toISOString().split('T')[0];
+        document.getElementById('dataFim').value = hoje.toISOString().split('T')[0];
+
+        function gerarRelatorioEmprestados() {
+            const dataInicio = document.getElementById('dataInicio').value;
+            const dataFim = document.getElementById('dataFim').value;
+            const categoria = document.getElementById('categoria').value;
+
+            if (!dataInicio || !dataFim) {
+                alert('Por favor, selecione o período para o relatório.');
+                return;
+            }
+
+            alert('Relatório de Livros Emprestados gerado!\n\nPeríodo: ' + dataInicio + ' a ' + dataFim + 
+                  (categoria ? '\nCategoria: ' + categoria : ''));
+        }
+
+        function gerarRelatorioAtrasados() {
+            const diasAtraso = document.getElementById('diasAtraso').value;
+            const turma = document.getElementById('turmaFiltro').value;
+
+            alert('Relatório de Livros Atrasados gerado!' + 
+                  (diasAtraso > 0 ? '\nMínimo de ' + diasAtraso + ' dias de atraso' : '') +
+                  (turma ? '\nTurma: ' + turma : ''));
+        }
+
+        function exportarRelatorio() {
+            alert('Exportando relatório para PDF...\n\nEm breve o download será iniciado.');
+        }
+
+        function imprimirRelatorio() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

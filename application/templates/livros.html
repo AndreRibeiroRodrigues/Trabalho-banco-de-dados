@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Livros - Biblioteca Escolar</title>
+    <link rel="stylesheet" href="">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #f4ede4;
+            color: #3a2f2a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #8b6f47, #a67c52);
+            color: #faf6f0;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid #6b5d52;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            background-color: #d4c4b0;
+            padding: 1rem;
+            border-bottom: 2px solid #8b6f47;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: #3a2f2a;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background-color: #faf6f0;
+            border: 2px solid #8b6f47;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav a:hover, .nav a.active {
+            background-color: #8b6f47;
+            color: #faf6f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b6f47;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px double #8b6f47;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .controls {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8b6f47;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d4c4b0;
+            background-color: #faf6f0;
+            color: #3a2f2a;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #8b6f47;
+            background-color: #8b6f47;
+            color: #faf6f0;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #a67c52;
+            border-color: #a67c52;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #d4c4b0;
+            border-color: #d4c4b0;
+            color: #3a2f2a;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8dfd5;
+            border-color: #e8dfd5;
+        }
+
+        .table-container {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1rem;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #6b5d52;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d4c4b0;
+            background-color: #faf6f0;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f4ede4;
+        }
+
+        tr:hover td {
+            background-color: #e8dfd5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-disponivel {
+            background-color: #90c695;
+            color: #1e4620;
+            border: 1px solid #6b9e6f;
+        }
+
+        .status-emprestado {
+            background-color: #f4c790;
+            color: #6b4e1f;
+            border: 1px solid #d4a76f;
+        }
+
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            margin: 0 0.25rem;
+            border: 1px solid #8b6f47;
+            background-color: #d4c4b0;
+            color: #3a2f2a;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #8b6f47;
+            color: #faf6f0;
+        }
+
+        .footer {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #6b5d52;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1>📚 Controle de Livros</h1>
+</header>
+
+<nav class="nav">
+    <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="livros.html" class="active">Livros</a></li>
+        <li><a href="emprestimos.html">Empréstimos</a></li>
+        <li><a href="alunos.html">Alunos</a></li>
+        <li><a href="relatorios.html">Relatórios</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h2 class="section-title">Gerenciamento de Acervo</h2>
+
+    <div class="controls">
+        <div class="controls-row">
+            <div class="form-group">
+                <label for="titulo">Título do Livro</label>
+                <input type="text" id="titulo" placeholder="Digite o título...">
+            </div>
+            <div class="form-group">
+                <label for="autor">Autor</label>
+                <input type="text" id="autor" placeholder="Digite o autor...">
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" placeholder="Digite o ISBN...">
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="categoria">
+                    <option value="">Todas</option>
+                    <option value="ficcao">Ficção</option>
+                    <option value="nao-ficcao">Não-Ficção</option>
+                    <option value="didatico">Didático</option>
+                    <option value="referencia">Referência</option>
+                </select>
+            </div>
+        </div>
+        <div class="controls-row" style="margin-top: 1rem;">
+            <button class="btn" onclick="adicionarLivro()">+ Adicionar Livro</button>
+            <button class="btn btn-secondary" onclick="buscarLivros()">🔍 Buscar</button>
+            <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="tabelaLivros">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Categoria</th>
+                <th>Ano</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>001</td>
+                <td>Dom Casmurro</td>
+                <td>Machado de Assis</td>
+                <td>978-8535911664</td>
+                <td>Ficção</td>
+                <td>1899</td>
+                <td><span class="status-badge status-disponivel">Disponível</span></td>
+                <td>
+                    <button class="action-btn" onclick="editarLivro(1)">✏️ Editar</button>
+                    <button class="action-btn" onclick="excluirLivro(1)">🗑️ Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>O Cortiço</td>
+                <td>Aluísio Azevedo</td>
+                <td>978-8508040537</td>
+                <td>Ficção</td>
+                <td>1890</td>
+                <td><span class="status-badge status-emprestado">Emprestado</span></td>
+                <td>
+                    <button class="action-btn" onclick="editarLivro(2)">✏️ Editar</button>
+                    <button class="action-btn" onclick="excluirLivro(2)">🗑️ Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td>003</td>
+                <td>Grande Sertão: Veredas</td>
+                <td>Guimarães Rosa</td>
+                <td>978-8520925683</td>
+                <td>Ficção</td>
+                <td>1956</td>
+                <td><span class="status-badge status-disponivel">Disponível</span></td>
+                <td>
+                    <button class="action-btn" onclick="editarLivro(3)">✏️ Editar</button>
+                    <button class="action-btn" onclick="excluirLivro(3)">🗑️ Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td>004</td>
+                <td>Memórias Póstumas de Brás Cubas</td>
+                <td>Machado de Assis</td>
+                <td>978-8535911671</td>
+                <td>Ficção</td>
+                <td>1881</td>
+                <td><span class="status-badge status-disponivel">Disponível</span></td>
+                <td>
+                    <button class="action-btn" onclick="editarLivro(4)">✏️ Editar</button>
+                    <button class="action-btn" onclick="excluirLivro(4)">🗑️ Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td>005</td>
+                <td>Capitães da Areia</td>
+                <td>Jorge Amado</td>
+                <td>978-8535914063</td>
+                <td>Ficção</td>
+                <td>1937</td>
+                <td><span class="status-badge status-emprestado">Emprestado</span></td>
+                <td>
+                    <button class="action-btn" onclick="editarLivro(5)">✏️ Editar</button>
+                    <button class="action-btn" onclick="excluirLivro(5)">🗑️ Excluir</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    function adicionarLivro() {
+        const titulo = document.getElementById('titulo').value;
+        const autor = document.getElementById('autor').value;
+        const isbn = document.getElementById('isbn').value;
+        const categoria = document.getElementById('categoria').value;
+
+        if (!titulo || !autor) {
+            alert('Por favor, preencha pelo menos o título e o autor do livro.');
+            return;
+        }
+
+        alert('Livro adicionado com sucesso!\n\nTítulo: ' + titulo + '\nAutor: ' + autor);
+        limparFiltros();
+    }
+
+    function buscarLivros() {
+        const titulo = document.getElementById('titulo').value.toLowerCase();
+        const autor = document.getElementById('autor').value.toLowerCase();
+        const isbn = document.getElementById('isbn').value.toLowerCase();
+        const categoria = document.getElementById('categoria').value;
+
+        const linhas = document.querySelectorAll('#tabelaLivros tbody tr');
+
+        linhas.forEach(linha => {
+            const tituloLivro = linha.cells[1].textContent.toLowerCase();
+            const autorLivro = linha.cells[2].textContent.toLowerCase();
+            const isbnLivro = linha.cells[3].textContent.toLowerCase();
+            const categoriaLivro = linha.cells[4].textContent.toLowerCase();
+
+            const matchTitulo = !titulo || tituloLivro.includes(titulo);
+            const matchAutor = !autor || autorLivro.includes(autor);
+            const matchIsbn = !isbn || isbnLivro.includes(isbn);
+            const matchCategoria = !categoria || categoriaLivro.includes(categoria);
+
+            if (matchTitulo && matchAutor && matchIsbn && matchCategoria) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    }
+
+    function limparFiltros() {
+        document.getElementById('titulo').value = '';
+        document.getElementById('autor').value = '';
+        document.getElementById('isbn').value = '';
+        document.getElementById('categoria').value = '';
+
+        const linhas = document.querySelectorAll('#tabelaLivros tbody tr');
+        linhas.forEach(linha => linha.style.display = '');
+    }
+
+    function editarLivro(id) {
+        alert('Editar livro ID: ' + id);
+    }
+
+    function excluirLivro(id) {
+        if (confirm('Tem certeza que deseja excluir este livro?')) {
+            alert('Livro ID ' + id + ' excluído com sucesso!');
+        }
+    }
+</script>
+</body>
+</html>

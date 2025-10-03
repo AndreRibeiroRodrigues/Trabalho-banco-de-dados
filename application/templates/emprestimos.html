@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Empréstimos - Biblioteca Escolar</title>
+    <link rel="stylesheet" href="app/globals.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #f4ede4;
+            color: #3a2f2a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #8b6f47, #a67c52);
+            color: #faf6f0;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid #6b5d52;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            background-color: #d4c4b0;
+            padding: 1rem;
+            border-bottom: 2px solid #8b6f47;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: #3a2f2a;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background-color: #faf6f0;
+            border: 2px solid #8b6f47;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav a:hover, .nav a.active {
+            background-color: #8b6f47;
+            color: #faf6f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b6f47;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px double #8b6f47;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .controls {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8b6f47;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d4c4b0;
+            background-color: #faf6f0;
+            color: #3a2f2a;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #8b6f47;
+            background-color: #8b6f47;
+            color: #faf6f0;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #a67c52;
+            border-color: #a67c52;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #d4c4b0;
+            border-color: #d4c4b0;
+            color: #3a2f2a;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8dfd5;
+            border-color: #e8dfd5;
+        }
+
+        .table-container {
+            background-color: #faf6f0;
+            border: 3px solid #d4c4b0;
+            padding: 1rem;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #6b5d52;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d4c4b0;
+            background-color: #faf6f0;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f4ede4;
+        }
+
+        tr:hover td {
+            background-color: #e8dfd5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-ativo {
+            background-color: #90c695;
+            color: #1e4620;
+            border: 1px solid #6b9e6f;
+        }
+
+        .status-atrasado {
+            background-color: #e89090;
+            color: #6b1f1f;
+            border: 1px solid #d46f6f;
+        }
+
+        .status-devolvido {
+            background-color: #b0b0b0;
+            color: #2a2a2a;
+            border: 1px solid #8a8a8a;
+        }
+
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            margin: 0 0.25rem;
+            border: 1px solid #8b6f47;
+            background-color: #d4c4b0;
+            color: #3a2f2a;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #8b6f47;
+            color: #faf6f0;
+        }
+
+        .footer {
+            background-color: #8b6f47;
+            color: #faf6f0;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #6b5d52;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📖 Controle de Empréstimos</h1>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="livros.html">Livros</a></li>
+            <li><a href="emprestimos.html" class="active">Empréstimos</a></li>
+            <li><a href="alunos.html">Alunos</a></li>
+            <li><a href="relatorios.html">Relatórios</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Gerenciamento de Empréstimos</h2>
+
+        <div class="controls">
+            <div class="controls-row">
+                <div class="form-group">
+                    <label for="aluno">Aluno</label>
+                    <select id="aluno">
+                        <option value="">Selecione um aluno</option>
+                        <option value="1">Maria Silva - 001</option>
+                        <option value="2">João Santos - 002</option>
+                        <option value="3">Ana Costa - 003</option>
+                        <option value="4">Pedro Oliveira - 004</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="livro">Livro</label>
+                    <select id="livro">
+                        <option value="">Selecione um livro</option>
+                        <option value="1">Dom Casmurro</option>
+                        <option value="3">Grande Sertão: Veredas</option>
+                        <option value="4">Memórias Póstumas de Brás Cubas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dataEmprestimo">Data de Empréstimo</label>
+                    <input type="date" id="dataEmprestimo">
+                </div>
+                <div class="form-group">
+                    <label for="dataDevolucao">Data de Devolução</label>
+                    <input type="date" id="dataDevolucao">
+                </div>
+            </div>
+            <div class="controls-row" style="margin-top: 1rem;">
+                <button class="btn" onclick="registrarEmprestimo()">+ Registrar Empréstimo</button>
+                <button class="btn btn-secondary" onclick="filtrarEmprestimos()">🔍 Filtrar</button>
+                <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="tabelaEmprestimos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Aluno</th>
+                        <th>Livro</th>
+                        <th>Data Empréstimo</th>
+                        <th>Data Devolução</th>
+                        <th>Data Devolvido</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Maria Silva</td>
+                        <td>O Cortiço</td>
+                        <td>15/01/2025</td>
+                        <td>29/01/2025</td>
+                        <td>-</td>
+                        <td><span class="status-badge status-ativo">Ativo</span></td>
+                        <td>
+                            <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
+                            <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>João Santos</td>
+                        <td>Capitães da Areia</td>
+                        <td>10/01/2025</td>
+                        <td>24/01/2025</td>
+                        <td>-</td>
+                        <td><span class="status-badge status-atrasado">Atrasado</span></td>
+                        <td>
+                            <button class="action-btn" onclick="devolverLivro(2)">✓ Devolver</button>
+                            <button class="action-btn" onclick="renovarEmprestimo(2)">🔄 Renovar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Ana Costa</td>
+                        <td>Dom Casmurro</td>
+                        <td>05/01/2025</td>
+                        <td>19/01/2025</td>
+                        <td>18/01/2025</td>
+                        <td><span class="status-badge status-devolvido">Devolvido</span></td>
+                        <td>
+                            <button class="action-btn" disabled>✓ Devolvido</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td>Pedro Oliveira</td>
+                        <td>Grande Sertão: Veredas</td>
+                        <td>20/01/2025</td>
+                        <td>03/02/2025</td>
+                        <td>-</td>
+                        <td><span class="status-badge status-ativo">Ativo</span></td>
+                        <td>
+                            <button class="action-btn" onclick="devolverLivro(4)">✓ Devolver</button>
+                            <button class="action-btn" onclick="renovarEmprestimo(4)">🔄 Renovar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>005</td>
+                        <td>Maria Silva</td>
+                        <td>Memórias Póstumas de Brás Cubas</td>
+                        <td>01/01/2025</td>
+                        <td>15/01/2025</td>
+                        <td>14/01/2025</td>
+                        <td><span class="status-badge status-devolvido">Devolvido</span></td>
+                        <td>
+                            <button class="action-btn" disabled>✓ Devolvido</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function registrarEmprestimo() {
+            const aluno = document.getElementById('aluno').value;
+            const livro = document.getElementById('livro').value;
+            const dataEmprestimo = document.getElementById('dataEmprestimo').value;
+            const dataDevolucao = document.getElementById('dataDevolucao').value;
+
+            if (!aluno || !livro || !dataEmprestimo || !dataDevolucao) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            alert('Empréstimo registrado com sucesso!');
+            limparFiltros();
+        }
+
+        function devolverLivro(id) {
+            if (confirm('Confirmar devolução do livro?')) {
+                alert('Livro devolvido com sucesso! ID: ' + id);
+                location.reload();
+            }
+        }
+
+        function renovarEmprestimo(id) {
+            if (confirm('Renovar empréstimo por mais 14 dias?')) {
+                alert('Empréstimo renovado com sucesso! ID: ' + id);
+                location.reload();
+            }
+        }
+
+        function filtrarEmprestimos() {
+            alert('Filtro aplicado!');
+        }
+
+        function limparFiltros() {
+            document.getElementById('aluno').value = '';
+            document.getElementById('livro').value = '';
+            document.getElementById('dataEmprestimo').value = '';
+            document.getElementById('dataDevolucao').value = '';
+        }
+
+        // Set today's date as default
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('dataEmprestimo').value = hoje;
+        
+        // Set default return date (14 days from today)
+        const devolucao = new Date();
+        devolucao.setDate(devolucao.getDate() + 14);
+        document.getElementById('dataDevolucao').value = devolucao.toISOString().split('T')[0];
+    </script>
+</body>
+</html>
