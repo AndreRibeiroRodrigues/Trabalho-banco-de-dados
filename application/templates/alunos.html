@@ -4,255 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Alunos - Biblioteca Escolar</title>
-    <link rel="stylesheet" href="app/globals.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/st_alunos.css')}}">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Georgia, 'Times New Roman', serif;
-            background-color: #f4ede4;
-            color: #3a2f2a;
-            line-height: 1.6;
-        }
-
-        .header {
-            background: linear-gradient(to bottom, #8b6f47, #a67c52);
-            color: #faf6f0;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 4px solid #6b5d52;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav {
-            background-color: #d4c4b0;
-            padding: 1rem;
-            border-bottom: 2px solid #8b6f47;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .nav a {
-            color: #3a2f2a;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            background-color: #faf6f0;
-            border: 2px solid #8b6f47;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .nav a:hover, .nav a.active {
-            background-color: #8b6f47;
-            color: #faf6f0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            color: #8b6f47;
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px double #8b6f47;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .controls {
-            background-color: #faf6f0;
-            border: 3px solid #d4c4b0;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .controls-row {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: end;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #8b6f47;
-            font-weight: 600;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #d4c4b0;
-            background-color: #faf6f0;
-            color: #3a2f2a;
-            font-family: Georgia, serif;
-            font-size: 1rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid #8b6f47;
-            background-color: #8b6f47;
-            color: #faf6f0;
-            font-family: Georgia, serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #a67c52;
-            border-color: #a67c52;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-secondary {
-            background-color: #d4c4b0;
-            border-color: #d4c4b0;
-            color: #3a2f2a;
-        }
-
-        .btn-secondary:hover {
-            background-color: #e8dfd5;
-            border-color: #e8dfd5;
-        }
-
-        .table-container {
-            background-color: #faf6f0;
-            border: 3px solid #d4c4b0;
-            padding: 1rem;
-            overflow-x: auto;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #8b6f47;
-            color: #faf6f0;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            border: 1px solid #6b5d52;
-        }
-
-        td {
-            padding: 0.75rem 1rem;
-            border: 1px solid #d4c4b0;
-            background-color: #faf6f0;
-        }
-
-        tr:nth-child(even) td {
-            background-color: #f4ede4;
-        }
-
-        tr:hover td {
-            background-color: #e8dfd5;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .status-ativo {
-            background-color: #90c695;
-            color: #1e4620;
-            border: 1px solid #6b9e6f;
-        }
-
-        .status-inativo {
-            background-color: #b0b0b0;
-            color: #2a2a2a;
-            border: 1px solid #8a8a8a;
-        }
-
-        .status-pendente {
-            background-color: #f4c790;
-            color: #6b4e1f;
-            border: 1px solid #d4a76f;
-        }
-
-        .action-btn {
-            padding: 0.4rem 0.8rem;
-            margin: 0 0.25rem;
-            border: 1px solid #8b6f47;
-            background-color: #d4c4b0;
-            color: #3a2f2a;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #8b6f47;
-            color: #faf6f0;
-        }
-
-        .footer {
-            background-color: #8b6f47;
-            color: #faf6f0;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
-            border-top: 4px solid #6b5d52;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .controls-row {
-                flex-direction: column;
-            }
-
-            .form-group {
-                width: 100%;
-            }
-        }
+        
     </style>
 </head>
 <body>
@@ -262,18 +16,18 @@
 
     <nav class="nav">
         <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="livros.html">Livros</a></li>
-            <li><a href="emprestimos.html">Empréstimos</a></li>
-            <li><a href="alunos.html" class="active">Alunos</a></li>
-            <li><a href="relatorios.html">Relatórios</a></li>
+            <li><a href="{{url_for('main.index')}}">Início</a></li>
+            <li><a href="{{url_for('main.livros')}}">Livros</a></li>
+            <li><a href="{{url_for('main.emprestimos')}}">Empréstimos</a></li>
+            <li><a href="{{url_for('main.alunos')}}" class="active">Alunos</a></li>
+            <li><a href="{{url_for('main.relatorios')}}">Relatórios</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2 class="section-title">Cadastro de Alunos</h2>
 
-        <div class="controls">
+        <form class="controls">
             <div class="controls-row">
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
@@ -309,7 +63,7 @@
                 </div>
                 <div class="form-group">
                     <label for="dataNascimento">Data de Nascimento</label>
-                    <input type="date" id="dataNascimento">
+                    <input type="date" id="dataNascimento" name>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
@@ -326,7 +80,7 @@
                 <button class="btn btn-secondary" onclick="buscarAlunos()">🔍 Buscar</button>
                 <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
-        </div>
+        </form>
 
         <div class="table-container">
             <table id="tabelaAlunos">
@@ -348,77 +102,12 @@
                         <td>Maria Silva</td>
                         <td>8º Ano A</td>
                         <td>maria.silva@escola.com</td>
-                        <td>(11) 98765-4321</td>
+                        <td>(11)98765-4321</td>
                         <td>2</td>
                         <td><span class="status-badge status-ativo">Ativo</span></td>
                         <td>
                             <button class="action-btn" onclick="editarAluno(1)">✏️ Editar</button>
                             <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>João Santos</td>
-                        <td>9º Ano B</td>
-                        <td>joao.santos@escola.com</td>
-                        <td>(11) 97654-3210</td>
-                        <td>1</td>
-                        <td><span class="status-badge status-ativo">Ativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(2)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(2)">📋 Histórico</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>003</td>
-                        <td>Ana Costa</td>
-                        <td>7º Ano A</td>
-                        <td>ana.costa@escola.com</td>
-                        <td>(11) 96543-2109</td>
-                        <td>0</td>
-                        <td><span class="status-badge status-ativo">Ativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(3)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(3)">📋 Histórico</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>004</td>
-                        <td>Pedro Oliveira</td>
-                        <td>8º Ano B</td>
-                        <td>pedro.oliveira@escola.com</td>
-                        <td>(11) 95432-1098</td>
-                        <td>1</td>
-                        <td><span class="status-badge status-ativo">Ativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(4)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(4)">📋 Histórico</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>005</td>
-                        <td>Carla Mendes</td>
-                        <td>6º Ano A</td>
-                        <td>carla.mendes@escola.com</td>
-                        <td>(11) 94321-0987</td>
-                        <td>0</td>
-                        <td><span class="status-badge status-pendente">Pendente</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(5)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(5)">📋 Histórico</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>006</td>
-                        <td>Lucas Ferreira</td>
-                        <td>9º Ano A</td>
-                        <td>lucas.ferreira@escola.com</td>
-                        <td>(11) 93210-9876</td>
-                        <td>0</td>
-                        <td><span class="status-badge status-inativo">Inativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(6)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(6)">📋 Histórico</button>
                         </td>
                     </tr>
                 </tbody>
@@ -429,70 +118,6 @@
     <footer class="footer">
         <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
     </footer>
-
-    <script>
-        function cadastrarAluno() {
-            const nome = document.getElementById('nome').value;
-            const matricula = document.getElementById('matricula').value;
-            const turma = document.getElementById('turma').value;
-            const email = document.getElementById('email').value;
-
-            if (!nome || !matricula || !turma || !email) {
-                alert('Por favor, preencha todos os campos obrigatórios (Nome, Matrícula, Turma e E-mail).');
-                return;
-            }
-
-            alert('Aluno cadastrado com sucesso!\n\nNome: ' + nome + '\nMatrícula: ' + matricula);
-            limparFiltros();
-        }
-
-        function buscarAlunos() {
-            const nome = document.getElementById('nome').value.toLowerCase();
-            const matricula = document.getElementById('matricula').value.toLowerCase();
-            const turma = document.getElementById('turma').value;
-            const status = document.getElementById('status').value;
-
-            const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
-            
-            linhas.forEach(linha => {
-                const nomeAluno = linha.cells[1].textContent.toLowerCase();
-                const matriculaAluno = linha.cells[0].textContent.toLowerCase();
-                const turmaAluno = linha.cells[2].textContent.toLowerCase();
-                const statusAluno = linha.cells[6].textContent.toLowerCase();
-
-                const matchNome = !nome || nomeAluno.includes(nome);
-                const matchMatricula = !matricula || matriculaAluno.includes(matricula);
-                const matchTurma = !turma || turmaAluno.includes(turma);
-                const matchStatus = !status || statusAluno.includes(status);
-
-                if (matchNome && matchMatricula && matchTurma && matchStatus) {
-                    linha.style.display = '';
-                } else {
-                    linha.style.display = 'none';
-                }
-            });
-        }
-
-        function limparFiltros() {
-            document.getElementById('nome').value = '';
-            document.getElementById('matricula').value = '';
-            document.getElementById('turma').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('telefone').value = '';
-            document.getElementById('dataNascimento').value = '';
-            document.getElementById('status').value = '';
-            
-            const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
-            linhas.forEach(linha => linha.style.display = '');
-        }
-
-        function editarAluno(id) {
-            alert('Editar aluno ID: ' + id);
-        }
-
-        function verHistorico(id) {
-            alert('Visualizar histórico de empréstimos do aluno ID: ' + id);
-        }
-    </script>
+    <script src="{{url_for('static', filename='js/sc_alunos.js')}}"></script>
 </body>
 </html>

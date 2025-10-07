@@ -8,22 +8,29 @@ bp = Blueprint('main', __name__)
 @bp.route('/')
 @bp.route('/apresentacao')
 def index():
-    alunos, emprestimos, livros = database.get_contagem_tabelas()
-    return render_template('index.html', alunos=alunos, emprestimos=emprestimos, livros=livros)
+    return render_template('index.html')
 
 
-@bp.route('/paginaInicial')
-def paginaInicial():
-    database.inserir_dados()
-    print('Dados inseridos com sucesso!')
-    return render_template('paginaInicial.html')
+@bp.route('/alunos')
+def alunos():
+    return render_template('alunos.html')
+
+@bp.route('/emprestimos')
+def emprestimos():
+    return render_template('emprestimos.html')
 
 
-@bp.route('/contato')
-def contato():
-    return '<h2>Página Contato</h2><p>Entre em contato pelo email:'
+@bp.route('/livros')
+def livros():
+    return render_template('livros.html')
 
 
-@bp.route('/sobre')
-def sobre():
-    return '<h2>Página Sobre</h2><p>Esse site foi feito em Flask!</p>'
+@bp.route('/relatorios')
+def relatorios():
+    return render_template('relatorios.html')
+
+@bp.route('/postalunos/', methods=['post'])
+def postalunos():
+    return render_template('postalunos.html')
+
+

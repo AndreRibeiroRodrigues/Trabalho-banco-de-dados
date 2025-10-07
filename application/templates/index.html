@@ -4,214 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Biblioteca Escolar</title>
-    <link rel="stylesheet" href="app/globals.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Georgia, 'Times New Roman', serif;
-            background-color: #f4ede4;
-            color: #3a2f2a;
-            line-height: 1.6;
-        }
-
-        .header {
-            background: linear-gradient(to bottom, #8b6f47, #a67c52);
-            color: #faf6f0;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 4px solid #6b5d52;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
-        .nav {
-            background-color: #d4c4b0;
-            padding: 1rem;
-            border-bottom: 2px solid #8b6f47;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .nav a {
-            color: #3a2f2a;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            background-color: #faf6f0;
-            border: 2px solid #8b6f47;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .nav a:hover {
-            background-color: #8b6f47;
-            color: #faf6f0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            color: #8b6f47;
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px double #8b6f47;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .team-member {
-            background-color: #faf6f0;
-            border: 3px solid #d4c4b0;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .team-member::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
-            border: 1px solid #d4c4b0;
-            pointer-events: none;
-        }
-
-        .team-member:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .team-member img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #8b6f47;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .team-member h3 {
-            color: #8b6f47;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .team-member p {
-            color: #6b5d52;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        .teacher-section {
-            background-color: #e8dfd5;
-            border: 3px double #8b6f47;
-            padding: 2rem;
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        .teacher-card {
-            background-color: #faf6f0;
-            border: 3px solid #8b6f47;
-            padding: 2rem;
-            max-width: 400px;
-            margin: 0 auto;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .teacher-card img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #8b6f47;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .teacher-card h3 {
-            color: #8b6f47;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .teacher-card p {
-            color: #3a2f2a;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .footer {
-            background-color: #8b6f47;
-            color: #faf6f0;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
-            border-top: 4px solid #6b5d52;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 1rem;
-            }
-
-            .nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/st_index.css') }}">
 </head>
 <body>
     <header class="header">
@@ -221,11 +14,11 @@
 
     <nav class="nav">
         <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="livros.html">Livros</a></li>
-            <li><a href="emprestimos.html">Empréstimos</a></li>
-            <li><a href="alunos.html">Alunos</a></li>
-            <li><a href="relatorios.html">Relatórios</a></li>
+            <li><a href="{{url_for('main.index')}}">Início</a></li>
+            <li><a href="{{url_for('main.livros')}}">Livros</a></li>
+            <li><a href="{{url_for('main.emprestimos')}}">Empréstimos</a></li>
+            <li><a href="{{url_for('main.alunos')}}">Alunos</a></li>
+            <li><a href="{{url_for('main.relatorios')}}">Relatórios</a></li>
         </ul>
     </nav>
 
@@ -234,31 +27,31 @@
         
         <div class="team-grid">
             <div class="team-member">
-                <img src="André.png" alt="Estudante 1">
+                <img src="{{url_for('static', filename='assets/Andre.png')}}" alt="Estudante 1">
                 <h3>André Ribeiro Rodrigues</h3>
                 <p>Analista de Sistemas</p>
             </div>
 
             <div class="team-member">
-                <img src="Bernardo.png" alt="Estudante 2">
+                <img src="{{url_for('static', filename='assets/Bernardo.png')}}" alt="Estudante 2">
                 <h3>Bernardo Zorzanelli Mendes</h3>
                 <p>Desenvolvedor Backend</p>
             </div>
 
             <div class="team-member">
-                <img src="Breno.png" alt="Estudante 3">
+                <img src="{{url_for('static', filename='assets/Breno.png')}}" alt="Estudante 3">
                 <h3>Breno Porto Caparrosa</h3>
                 <p>Desenvolvedor Backend</p>
             </div>
 
             <div class="team-member">
-                <img src="Rhyan.png" alt="Estudante 4">
+                <img src="{{url_for('static', filename='assets/Rhyan.png')}}" alt="Estudante 4">
                 <h3>Rhyan Franca Borsoneli Silva</h3>
                 <p>Desenvolvedor Backend</p>
             </div>
 
             <div class="team-member">
-                <img src="Samy.PNG" alt="Estudante 5">
+                <img src="{{url_for('static', filename='assets/Samy.PNG')}}" alt="Estudante 5">
                 <h3>Samyla Silva Passos</h3>
                 <p>Desenvolvedora Frontend</p>
             </div>
@@ -267,7 +60,7 @@
         <div class="teacher-section">
             <h2 class="section-title">Orientação do Projeto</h2>
             <div class="teacher-card">
-                <img src="Professor.png" alt="Professor">
+                <img src="{{url_for('static', filename='assets/Professor.png')}}" alt="Professor">
                 <h3>Prof. Howard Cruz Roatti</h3>
                 <p>Orientador do Projeto</p>
                 <p style="font-style: italic; margin-top: 0.5rem; font-size: 0.9rem;">

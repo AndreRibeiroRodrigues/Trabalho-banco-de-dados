@@ -1,0 +1,6 @@
+Lembrete de como usar:
+source /home/user/Trabalho-banco-de-dados/venv/bin/activate
+
+python3  run.py
+
+/home/user/Trabalho-banco-de-dados/application/static/js/sc_alunos.js
