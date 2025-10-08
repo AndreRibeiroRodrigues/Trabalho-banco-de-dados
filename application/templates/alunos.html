@@ -26,20 +26,20 @@
 
     <div class="container">
         <h2 class="section-title">Cadastro de Alunos</h2>
-
-        <form class="controls">
+<!-- form -->
+        <form class="controls" action="/post_aluno" method="POST">
             <div class="controls-row">
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
-                    <input type="text" id="nome" placeholder="Digite o nome do aluno...">
+                    <input type="text" name="nome" placeholder="Digite o nome do aluno...">
                 </div>
                 <div class="form-group">
                     <label for="matricula">Matrícula</label>
-                    <input type="text" id="matricula" placeholder="Digite a matrícula...">
+                    <input type="text" name="matricula" placeholder="Digite a matrícula...">
                 </div>
                 <div class="form-group">
                     <label for="turma">Turma</label>
-                    <select id="turma">
+                    <select id="turma" name="turma">
                         <option value="">Selecione a turma</option>
                         <option value="6a">6º Ano A</option>
                         <option value="6b">6º Ano B</option>
@@ -53,21 +53,21 @@
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" placeholder="Digite o e-mail...">
+                    <input type="email" name="email" placeholder="Digite o e-mail...">
                 </div>
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
-                    <input type="tel" id="telefone" placeholder="(00) 00000-0000">
+                    <input type="tel" name="telefone" placeholder="(00) 00000-0000">
                 </div>
                 <div class="form-group">
                     <label for="dataNascimento">Data de Nascimento</label>
-                    <input type="date" id="dataNascimento" name>
+                    <input type="date" id="dataNascimento" name="data" required>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select id="status">
+                    <select name="status">
                         <option value="">Todos</option>
                         <option value="ativo">Ativo</option>
                         <option value="inativo">Inativo</option>
@@ -76,12 +76,12 @@
                 </div>
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
-                <button class="btn" onclick="cadastrarAluno()">+ Cadastrar Aluno</button>
-                <button class="btn btn-secondary" onclick="buscarAlunos()">🔍 Buscar</button>
+                <button class="btn" type="submit" name="acao" value="inserir" >+ Cadastrar Aluno</button>
+                <button class="btn btn-secondary" onclick="acaoForm(filtrar)">🔍 Buscar</button>
                 <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
         </form>
-
+<!-- fim do form -->
         <div class="table-container">
             <table id="tabelaAlunos">
                 <thead>
@@ -91,25 +91,26 @@
                         <th>Turma</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
-                        <th>Empréstimos Ativos</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>Maria Silva</td>
-                        <td>8º Ano A</td>
-                        <td>maria.silva@escola.com</td>
-                        <td>(11)98765-4321</td>
-                        <td>2</td>
-                        <td><span class="status-badge status-ativo">Ativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="editarAluno(1)">✏️ Editar</button>
-                            <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button>
-                        </td>
-                    </tr>
+                    {%for aluno in alunos%}
+                        <tr>
+                            <td>{{aluno.matricula}}</td>
+                            <td>{{aluno.nome}}</td>
+                            <td>{{aluno.turma}}</td>
+                            <td>{{aluno.email}}</td>
+                            <td>{{aluno.telefone}}</td>
+                            <td><span class="status-badge status-pendente">{{aluno.status}}</span></td>
+                            <td>
+                                <button class="action-btn" onclick="editarAluno(1)">✏️ Editar</button>
+                                <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button>
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, request
 import application.database as database
-import sqlite3
 
 bp = Blueprint('main', __name__)
 
@@ -13,7 +12,8 @@ def index():
 
 @bp.route('/alunos')
 def alunos():
-    return render_template('alunos.html')
+    alunos = database.get_alunos()
+    return render_template('alunos.html', alunos=alunos)
 
 @bp.route('/emprestimos')
 def emprestimos():
@@ -29,8 +29,21 @@ def livros():
 def relatorios():
     return render_template('relatorios.html')
 
-@bp.route('/postalunos/', methods=['post'])
-def postalunos():
-    return render_template('postalunos.html')
+@bp.route('/post_aluno', methods=['POST']) # type: ignore
+def post_aluno():
+    nome = request.form.get('nome')
+    matricula = request.form.get('matricula')
+    turma =request.form.get('turma')
+    email = request.form.get('email')
+    telefona = request.form.get('telefone')
+    data = request.form.get('data')
+    status = request.form.get('status')
+
+    acao = request.form.get('acao')
+    if acao == 'inserir':
+        
+        return  redirect('/alunos')
+    elif acao == 'filtrar':
+        return
 
 

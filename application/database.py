@@ -61,3 +61,25 @@ def inserir_dados():
     cursor.executescript(schema)
     conn.commit()
     conn.close()
+
+#função para pegar os alunos do banco de dados
+def get_alunos():
+    alunos = [{
+        'matricula':1542,
+        'nome':'andre',
+        'turma': '6A',
+        'email':'nao te interessa',
+        'telefone':'99999-9999',
+        'data_nascimento':'01/01/2000',
+        'status':'ativo'
+    },
+    {
+        'matricula':1542,
+        'nome':'andre',
+        'turma': '6A',
+        'email':'nao te interessa',
+        'telefone':'99999-9999',
+        'data_nascimento':'01/01/2000',
+        'status':'inativo'
+    }]
+    return alunos
