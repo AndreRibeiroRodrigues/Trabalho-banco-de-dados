@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 
-def get_db_connection():
+def get_connection():
     conn = sqlite3.connect('banco_de_dados.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -18,7 +18,7 @@ def get_db_connection():
 # Lembre-se de fechar a conexão quando terminar.
 
 def init_db():
-    conn = get_db_connection()
+    conn = get_connection()
     cursor = conn.cursor()
     base_dir = os.path.dirname(__file__)
     schema_path = os.path.join(base_dir, 'schema.sql')
@@ -32,27 +32,8 @@ def init_db():
 # A função init_db() inicializa o banco de dados executando um script SQL a partir de um arquivo chamado schema.sql.
 # Certifique-se de ter um arquivo schema.sql no mesmo diretório com a estrutura do banco
 
-def get_contagem_tabelas():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM ALUNO;")
-    alunos = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM EMPRESTIMO;")
-    emprestimos = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM LIVRO;")
-    livros = cursor.fetchone()[0]
-    print(alunos, emprestimos, livros)
-    return alunos, emprestimos, livros
-    # Exemplo de uso:
-    # init_db()
-    conn.close()
-
-
 def inserir_dados():
-    conn = get_db_connection()
+    conn = get_connection()
     cursor = conn.cursor()
     base_dir = os.path.dirname(__file__)
     schema_path = os.path.join(base_dir, 'dados.sql')
@@ -64,22 +45,25 @@ def inserir_dados():
 
 #função para pegar os alunos do banco de dados
 def get_alunos():
-    alunos = [{
-        'matricula':1542,
-        'nome':'andre',
-        'turma': '6A',
-        'email':'nao te interessa',
-        'telefone':'99999-9999',
-        'data_nascimento':'01/01/2000',
-        'status':'ativo'
-    },
-    {
-        'matricula':1542,
-        'nome':'andre',
-        'turma': '6A',
-        'email':'nao te interessa',
-        'telefone':'99999-9999',
-        'data_nascimento':'01/01/2000',
-        'status':'inativo'
-    }]
+    conn = get_connection()
+    cursos = conn.cursor()
+    cursor.execute('SELECT * FROM  ALUNOS')
+    alunos = crusor.fetchall()
+    conn.close()
     return alunos
+
+def get_livros():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM LIVROS')
+    livros = cursor.fetchall()
+    conn.close()
+    return livros
+
+def get_emprestimos():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM EMPRESTIMOS')
+    emprestimos = cursor.fetchall()
+    conn.close()
+    return emprestimos

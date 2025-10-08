@@ -17,12 +17,16 @@ def alunos():
 
 @bp.route('/emprestimos')
 def emprestimos():
-    return render_template('emprestimos.html')
+    alunos = database.get_alunos()
+    livros = database.get_livros()
+    emprestimos = database.get_emprestimos()
+    return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
 
 
 @bp.route('/livros')
 def livros():
-    return render_template('livros.html')
+    livros = database.get_livros()
+    return render_template('livros.html', livros=livros)
 
 
 @bp.route('/relatorios')

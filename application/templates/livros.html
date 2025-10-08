@@ -51,6 +51,10 @@
                     <option value="referencia">Referência</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="ano">Ano Publicação</label>
+                <input type="text" name="ano" id="anoPublicacaoc" placeholder="Digite o ano...">
+            </div>
         </div>
         <div class="controls-row" style="margin-top: 1rem;">
             <button class="btn" onclick="adicionarLivro()">+ Adicionar Livro</button>
@@ -74,8 +78,21 @@
             </tr>
             </thead>
             <tbody>
-                
-            <tr>
+                {%for livro in livros%}
+                <tr>
+                    <td>{{livro.id}}</td>
+                    <td>{{livro.titulo}}</td>
+                    <td>{{livro.autor}}</td>
+                    <td>{{livro.isbn}}</td>
+                    <td>{{livro.categoria}}</td>
+                    <td>{{livro.ano}}</td>
+                    <td>
+                        <button class="action-btn" onclick="editarLivro(1)">✏️ Editar</button>
+                        <button class="action-btn" onclick="excluirLivro(1)">🗑️ Excluir</button>
+                    </td>
+                </tr>
+                {%endfor%}
+            <!-- <tr>
                 <td>1</td>
                 <td>Dom Casmurro</td>
                 <td>Machado de Assis</td>
@@ -87,7 +104,7 @@
                     <button class="action-btn" onclick="editarLivro(1)">✏️ Editar</button>
                     <button class="action-btn" onclick="excluirLivro(1)">🗑️ Excluir</button>
                 </td>
-            </tr>
+            </tr> -->
             </tbody>
         </table>
     </div>

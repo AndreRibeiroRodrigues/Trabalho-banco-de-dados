@@ -27,16 +27,16 @@
     <div class="container">
         <h2 class="section-title">Gerenciamento de Empréstimos</h2>
 
-        <div class="controls">
+        <form class="controls">
             <div class="controls-row">
                 <div class="form-group">
                     <label for="aluno">Aluno</label>
                     <select id="aluno">
                         <option value="">Selecione um aluno</option>
                         <option value="1">Maria Silva - 001</option>
-                        <option value="2">João Santos - 002</option>
-                        <option value="3">Ana Costa - 003</option>
-                        <option value="4">Pedro Oliveira - 004</option>
+                        {{for aluno in alunos}}
+                        <option value="{{aluno.matricula}}">{{aluno.nome}} - {{aluno.matricula}}</option>
+                        {{endfor}}
                     </select>
                 </div>
                 <div class="form-group">
@@ -44,8 +44,9 @@
                     <select id="livro">
                         <option value="">Selecione um livro</option>
                         <option value="1">Dom Casmurro</option>
-                        <option value="3">Grande Sertão: Veredas</option>
-                        <option value="4">Memórias Póstumas de Brás Cubas</option>
+                        {{for livro in livros}}
+                        <option value="{{livro.id}}">{{livro.titulo}}</option>
+                        {{endfor}}
                     </select>
                 </div>
                 <div class="form-group">
@@ -62,7 +63,7 @@
                 <button class="btn btn-secondary" onclick="filtrarEmprestimos()">🔍 Filtrar</button>
                 <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
-        </div>
+        </form>
 
         <div class="table-container">
             <table id="tabelaEmprestimos">
@@ -79,6 +80,30 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {%for emprestimo in emprestimos%}
+                    <tr>
+                        <td>{{emprestimo.id}}</td>
+                        <td>{{emprestimo.aluno}}</td>
+                        <td>{{emprestimo.livro}}</td>
+                        <td>{{emprestimo.dataEmprestimo}}</td>
+                        <td>{{emprestimo.dataDevolucao}}</td>
+                        {% set now = modules.datetime.datetime.now().date() %}
+                        {% set data_emprestimo_dt = modules.datetime.datetime.strptime(emprestimo.dataEmprestimo, '%d/%m/%Y').date() %}
+                        {% set diff = (now - data_emprestimo_dt).days %}
+
+                        {%if diff >= 14 and emprestimo.status == 'ativo'%}
+                        <td><span class="status-badge status-atrasado">{{emprestimo.status}}</span></td>
+                        {%elif emprestimo.status == 'ativo'%}
+                        <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
+                        {%elif emprestimo.status == 'devolvido'%}
+                        <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
+                        {%endif%}                       
+                        <td>
+                            <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
+                            <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
+                        </td>
+                    </tr>
+                    {%endfor%}
                     <tr>
                         <td>001</td>
                         <td>Maria Silva</td>
@@ -101,6 +126,6 @@
         <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
     </footer>
 
-    <script src="url_for('static', filename='js/sc_emprestimos.js')"></script>
+    <!-- <script src="url_for('static', filename='js/sc_emprestimos.js')"></script> -->
 </body>
 </html>
