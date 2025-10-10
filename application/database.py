@@ -46,9 +46,9 @@ def inserir_dados():
 #função para pegar os alunos do banco de dados
 def get_alunos():
     conn = get_connection()
-    cursos = conn.cursor()
+    cursor = conn.cursor()
     cursor.execute('SELECT * FROM  ALUNOS')
-    alunos = crusor.fetchall()
+    alunos = cursor.fetchall()
     conn.close()
     return alunos
 

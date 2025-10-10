@@ -34,9 +34,9 @@
                     <select id="aluno">
                         <option value="">Selecione um aluno</option>
                         <option value="1">Maria Silva - 001</option>
-                        {{for aluno in alunos}}
+                        {% for aluno in alunos %}
                         <option value="{{aluno.matricula}}">{{aluno.nome}} - {{aluno.matricula}}</option>
-                        {{endfor}}
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
@@ -44,9 +44,9 @@
                     <select id="livro">
                         <option value="">Selecione um livro</option>
                         <option value="1">Dom Casmurro</option>
-                        {{for livro in livros}}
+                        {% for livro in livros %}
                         <option value="{{livro.id}}">{{livro.titulo}}</option>
-                        {{endfor}}
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
