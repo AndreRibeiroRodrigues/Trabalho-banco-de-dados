@@ -20,8 +20,8 @@ def emprestimos():
     alunos = database.get_alunos()
     livros = database.get_livros()
     emprestimos = database.get_emprestimos()
-    return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
 
+    return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
 
 @bp.route('/livros')
 def livros():
@@ -45,9 +45,19 @@ def post_aluno():
 
     acao = request.form.get('acao')
     if acao == 'inserir':
-        
+        database.inserir_aluno(nome, matricula, turma, email, telefona, data, status)
         return  redirect('/alunos')
     elif acao == 'filtrar':
         return
+@bp.route('/post_emprestimo', methods=['POST'])
+def post_emprestimo():
+    matricula = request.form.get('aluno')
+    idlivro = request.form.get('livro')
+    dataEmprestimo = request.form.get('dataEmprestimo')
+    dataDevolucao = request.form.get('dataDevolucao')
+    acao = request.form.get('acao')
+    if acao == 'inserir':
+        database.inserir_emprestimo(matricula, idlivro, dataEmprestimo)
+        return redirect('/emprestimos')
 
 

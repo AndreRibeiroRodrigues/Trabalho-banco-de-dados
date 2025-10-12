@@ -46,9 +46,9 @@ def inserir_dados():
 #função para pegar os alunos do banco de dados
 def get_alunos():
     conn = get_connection()
-    cursos = conn.cursor()
+    cursor = conn.cursor()
     cursor.execute('SELECT * FROM  ALUNOS')
-    alunos = crusor.fetchall()
+    alunos = cursor.fetchall()
     conn.close()
     return alunos
 
@@ -67,3 +67,19 @@ def get_emprestimos():
     emprestimos = cursor.fetchall()
     conn.close()
     return emprestimos
+
+def inserir_aluno(nome, matricula, turma, email, telefone, data, status):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO ALUNOS (NOME, MATRICULA, TURMA, EMAIL, TELEFONE, DATANASCIMENTO, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                   (nome, matricula, turma, email, telefone, data, status))
+    conn.commit()
+    conn.close
+
+def inserir_emprestimo(matricula, idlivro, dataEmprestimo):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO EMPRESTIMOS (ID_ALUNO, ID_LIVRO, DATAEMPRESTIMO) VALUES (?, ?, ?)',
+                    (matricula, idlivro, dataEmprestimo))
+    conn.commit()
+    conn.close()
