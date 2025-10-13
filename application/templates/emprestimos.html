@@ -80,24 +80,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                     {%for emprestimo in emprestimos%}
-                    <tr>
-                        <td>{{emprestimo.id}}</td>
-                        <td>{{emprestimo.aluno}}</td>
-                        <td>{{emprestimo.livro}}</td>
-                        <td>{{emprestimo.dataEmprestimo}}</td>
-                        <td>{{emprestimo.dataDevolucao}}</td>
-                       
-                        {%if emprestimo.status == 'ativo'%}
-                        <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
-                        {%elif emprestimo.status == 'devolvido'%}
-                        <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
-                        {%endif%}                       
-                        <td>
-                            <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
-                            <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
-                        </td>
-                    </tr>
+                    {%for emprestimo in emprestimos%}
+                    <form action="submit">
+                        <tr>
+                            <td>{{emprestimo.id}}</td>
+                            <td>{{emprestimo.aluno}}</td>
+                            <td>{{emprestimo.livro}}</td>
+                            <td>{{emprestimo.dataEmprestimo}}</td>
+                            {%if emprestimo.dataDevolucao == None%}
+                            <td>-</td>
+                            {%else%}
+                            <td>{{emprestimo.dataDevolucao}}</td>
+                            {%endif%}
+                        
+                            {%if emprestimo.status == 'ativo'%}
+                            <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
+                            {%elif emprestimo.status == 'devolvido'%}
+                            <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
+                            {%endif%}
+                            <td>
+                                <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
+                                <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
+                            </td>
+                        </tr>
+                    </form>
                     {%endfor%} 
                     <tr>
                         <td>001</td>

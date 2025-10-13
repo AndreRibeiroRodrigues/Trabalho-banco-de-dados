@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import datetime
 
 
 def get_connection():
@@ -76,7 +77,8 @@ def inserir_aluno(nome, matricula, turma, email, telefone, data, status):
     conn.commit()
     conn.close
 
-def inserir_emprestimo(matricula, idlivro, dataEmprestimo):
+def inserir_emprestimo(matricula, idlivro):
+    dataEmprestimo = datetime.datetime.now().strftime('%Y-%m-%d')
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO EMPRESTIMOS (ID_ALUNO, ID_LIVRO, DATAEMPRESTIMO) VALUES (?, ?, ?)',

@@ -48,7 +48,8 @@ def post_aluno():
         database.inserir_aluno(nome, matricula, turma, email, telefona, data, status)
         return  redirect('/alunos')
     elif acao == 'filtrar':
-        return
+        return  redirect('/alunos')
+
 @bp.route('/post_emprestimo', methods=['POST'])
 def post_emprestimo():
     matricula = request.form.get('aluno')
@@ -57,7 +58,9 @@ def post_emprestimo():
     dataDevolucao = request.form.get('dataDevolucao')
     acao = request.form.get('acao')
     if acao == 'inserir':
-        database.inserir_emprestimo(matricula, idlivro, dataEmprestimo)
+        database.inserir_emprestimo(matricula, idlivro)
+        return redirect('/emprestimos')
+    else:
         return redirect('/emprestimos')
 
 
