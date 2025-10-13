@@ -27,26 +27,26 @@
     <div class="container">
         <h2 class="section-title">Gerenciamento de Empréstimos</h2>
 
-        <form class="controls">
+        <form class="controls" action="/post_emprestimo" method="POST"> 
             <div class="controls-row">
                 <div class="form-group">
                     <label for="aluno">Aluno</label>
-                    <select id="aluno">
+                    <select name="aluno">
                         <option value="">Selecione um aluno</option>
                         <option value="1">Maria Silva - 001</option>
-                        {% for aluno in alunos %}
+                        {%for aluno in alunos%}
                         <option value="{{aluno.matricula}}">{{aluno.nome}} - {{aluno.matricula}}</option>
-                        {% endfor %}
+                        {%endfor%}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="livro">Livro</label>
-                    <select id="livro">
+                    <select name="livro">
                         <option value="">Selecione um livro</option>
                         <option value="1">Dom Casmurro</option>
-                        {% for livro in livros %}
+                        {%for livro in livros%}
                         <option value="{{livro.id}}">{{livro.titulo}}</option>
-                        {% endfor %}
+                        {%endfor%}
                     </select>
                 </div>
                 <div class="form-group">
@@ -59,8 +59,8 @@
                 </div>
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
-                <button class="btn" onclick="registrarEmprestimo()">+ Registrar Empréstimo</button>
-                <button class="btn btn-secondary" onclick="filtrarEmprestimos()">🔍 Filtrar</button>
+                <button class="btn" type="submit" name="acao" value="inserir"> Registrar Empréstimo</button>
+                <button class="btn btn-seco'ndary" onclick="filtrarEmprestimos()">🔍 Filtrar</button>
                 <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
         </form>
@@ -80,20 +80,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {%for emprestimo in emprestimos%}
+                     {%for emprestimo in emprestimos%}
                     <tr>
                         <td>{{emprestimo.id}}</td>
                         <td>{{emprestimo.aluno}}</td>
                         <td>{{emprestimo.livro}}</td>
                         <td>{{emprestimo.dataEmprestimo}}</td>
                         <td>{{emprestimo.dataDevolucao}}</td>
-                        {% set now = modules.datetime.datetime.now().date() %}
-                        {% set data_emprestimo_dt = modules.datetime.datetime.strptime(emprestimo.dataEmprestimo, '%d/%m/%Y').date() %}
-                        {% set diff = (now - data_emprestimo_dt).days %}
-
-                        {%if diff >= 14 and emprestimo.status == 'ativo'%}
-                        <td><span class="status-badge status-atrasado">{{emprestimo.status}}</span></td>
-                        {%elif emprestimo.status == 'ativo'%}
+                       
+                        {%if emprestimo.status == 'ativo'%}
                         <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
                         {%elif emprestimo.status == 'devolvido'%}
                         <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
@@ -103,7 +98,7 @@
                             <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
                         </td>
                     </tr>
-                    {%endfor%}
+                    {%endfor%} 
                     <tr>
                         <td>001</td>
                         <td>Maria Silva</td>
