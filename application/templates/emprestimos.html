@@ -74,7 +74,6 @@
                         <th>Livro</th>
                         <th>Data Empréstimo</th>
                         <th>Data Devolução</th>
-                        <th>Data Devolvido</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -83,20 +82,21 @@
                     {%for emprestimo in emprestimos%}
                     <form action="submit">
                         <tr>
-                            <td>{{emprestimo.id}}</td>
-                            <td>{{emprestimo.aluno}}</td>
-                            <td>{{emprestimo.livro}}</td>
+                            <td>{{emprestimo.id_emprestimo}}</td>
+                            <td>{{emprestimo.Aluno}}</td>
+                            <td>{{emprestimo.Livro}}</td>
                             <td>{{emprestimo.dataEmprestimo}}</td>
                             {%if emprestimo.dataDevolucao == None%}
                             <td>-</td>
                             {%else%}
                             <td>{{emprestimo.dataDevolucao}}</td>
                             {%endif%}
-                        
                             {%if emprestimo.status == 'ativo'%}
                             <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
                             {%elif emprestimo.status == 'devolvido'%}
                             <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
+                            {%else%}
+                            <td><span class="status-badge status-pendente">None</span></td>
                             {%endif%}
                             <td>
                                 <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
@@ -104,20 +104,7 @@
                             </td>
                         </tr>
                     </form>
-                    {%endfor%} 
-                    <tr>
-                        <td>001</td>
-                        <td>Maria Silva</td>
-                        <td>O Cortiço</td>
-                        <td>15/01/2025</td>
-                        <td>29/01/2025</td>
-                        <td>-</td>
-                        <td><span class="status-badge status-ativo">Ativo</span></td>
-                        <td>
-                            <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
-                            <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
-                        </td>
-                    </tr>
+                    {%endfor%}
                 </tbody>
             </table>
         </div>

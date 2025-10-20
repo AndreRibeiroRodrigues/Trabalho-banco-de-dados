@@ -64,6 +64,7 @@ def get_livros():
 def get_emprestimos():
     conn = get_connection()
     cursor = conn.cursor()
+    
     cursor.execute('''
         SELECT 
             e.ID AS id_emprestimo,
@@ -76,11 +77,11 @@ def get_emprestimos():
         JOIN ALUNOS a ON e.ID_ALUNO = a.MATRICULA
         JOIN LIVROS l ON e.ID_LIVRO = l.ID;
     ''')
-
-        # # Pegar o nome das colunas
+    
+    # # Pegar o nome das colunas
     # colunas = [desc[0] for desc in cursor.description]
     # # Converter o resultado em lista de dicionários
-    # emprestimos = [dict(zip(colunas, linha)) for linha in cursor.fetchall()
+    # emprestimos = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
     emprestimos = cursor.fetchall()
     conn.close()
     return emprestimos

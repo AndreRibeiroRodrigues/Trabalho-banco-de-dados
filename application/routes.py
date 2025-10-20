@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, render_template, redirect, request, jsonify
 import application.database as database
 
 bp = Blueprint('main', __name__)
@@ -37,7 +37,8 @@ def relatorios():
 def post_aluno():
     nome = request.form.get('nome')
     matricula = request.form.get('matricula')
-    turma =request.form.get('turma')
+    turma =request.form.get('turma').split('-')
+    turma = f"{turma[0]}º Ano{turma[1].upper()}"
     email = request.form.get('email')
     telefona = request.form.get('telefone')
     data = request.form.get('data')
