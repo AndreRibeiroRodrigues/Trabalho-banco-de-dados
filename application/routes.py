@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, render_template, redirect, request, jsonify
 import application.database as database
 
 bp = Blueprint('main', __name__)
