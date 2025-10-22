@@ -27,7 +27,7 @@
     <div class="container">
         <h2 class="section-title">Gerenciamento de Empréstimos</h2>
 
-        <form class="controls" action="/post_emprestimo" method="POST"> 
+        <form class="controls" action="/emprestimos/adicionar" method="POST"> 
             <div class="controls-row">
                 <div class="form-group">
                     <label for="aluno">Aluno</label>
@@ -49,19 +49,9 @@
                         {%endfor%}
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="dataEmprestimo">Data de Empréstimo</label>
-                    <input type="date" id="dataEmprestimo">
-                </div>
-                <div class="form-group">
-                    <label for="dataDevolucao">Data de Devolução</label>
-                    <input type="date" id="dataDevolucao">
-                </div>
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
                 <button class="btn" type="submit" name="acao" value="inserir"> Registrar Empréstimo</button>
-                <button class="btn btn-seco'ndary" onclick="filtrarEmprestimos()">🔍 Filtrar</button>
-                <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
         </form>
 
@@ -74,7 +64,6 @@
                         <th>Livro</th>
                         <th>Data Empréstimo</th>
                         <th>Data Devolução</th>
-                        <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -91,17 +80,8 @@
                             {%else%}
                             <td>{{emprestimo.dataDevolucao}}</td>
                             {%endif%}
-                            {%if emprestimo.status == 'ativo'%}
-                            <td><span class="status-badge status-ativo">{{emprestimo.status}}</span></td>
-                            {%elif emprestimo.status == 'devolvido'%}
-                            <td><span class="status-badge status-devolvido">{{emprestimo.status}}</span></td>
-                            {%else%}
-                            <td><span class="status-badge status-pendente">None</span></td>
-                            {%endif%}
                             <td>
-                                <button class="action-btn" onclick="devolverLivro(1)">✓ Devolver</button>
-                                <button class="action-btn" onclick="renovarEmprestimo(1)">🔄 Renovar</button>
-                            </td>
+                                <button class="action-btn" onclick="devolverEmprestimo('{{ emprestimo.id_emprestimo }}')">✓ Devolver</button>                            </td>
                         </tr>
                     </form>
                     {%endfor%}
@@ -114,6 +94,6 @@
         <p>&copy; 2025 Sistema de Biblioteca Escolar. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- <script src="url_for('static', filename='js/sc_emprestimos.js')"></script> -->
+    <script src="{{url_for('static',filename='js/sc_emprestimo.js')}}"></script>
 </body>
 </html>

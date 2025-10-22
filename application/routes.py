@@ -66,7 +66,7 @@ def emprestimos():
 
     return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
 
-@bp.route('/post_emprestimo', methods=['POST'])
+@bp.route('/emprestimos/adicionar', methods=['POST'])
 def post_emprestimo():
     matricula = request.form.get('aluno')
     idlivro = request.form.get('livro')
@@ -78,7 +78,11 @@ def post_emprestimo():
         return redirect('/emprestimos')
     else:
         return redirect('/emprestimos')
-    
+
+@bp.route('/emprestimos/devolver/<int:id>', methods=['PUT'])
+def devolver_livro(id):
+    database.devolver_livro(id)
+    return jsonify({"message": "Livro devolvido com sucesso!"})
 #livro
 @bp.route('/livros')
 def livros():

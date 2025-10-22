@@ -110,21 +110,26 @@ def get_emprestimos():
             a.NOME AS Aluno,
             l.TITULO AS Livro,
             e.DATAEMPRESTIMO,
-            e.DATADEVOLUCAO,
-            e.STATUS
+            e.DATADEVOLUCAO
         FROM EMPRESTIMOS e
         JOIN ALUNOS a ON e.ID_ALUNO = a.MATRICULA
         JOIN LIVROS l ON e.ID_LIVRO = l.ID;
     ''')
-    
-    # # Pegar o nome das colunas
-    # colunas = [desc[0] for desc in cursor.description]
-    # # Converter o resultado em lista de dicionários
-    # emprestimos = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
     emprestimos = cursor.fetchall()
     conn.close()
     return emprestimos
 
+def devolver_livro(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    dataDevolucao = datetime.datetime.now().strftime('%Y-%m-%d')
+    cursor.execute('''
+        UPDATE EMPRESTIMOS
+        SET DATADEVOLUCAO = ?
+        WHERE ID = ?
+    ''', (dataDevolucao, id))
+    conn.commit()
+    conn.close()
 
 
 def inserir_emprestimo(matricula, idlivro):
