@@ -68,19 +68,9 @@
                     <label for="dataNascimento">Data de Nascimento</label>
                     <input type="date" id="dataNascimento" name="data" required>
                 </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status">
-                        <option value="">Todos</option>
-                        <option value="ativo">Ativo</option>
-                        <option value="inativo">Inativo</option>
-                        <option value="pendente">Pendente</option>
-                    </select>
-                </div>
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
                 <button class="btn" type="submit" name="acao" value="inserir" >+ Cadastrar Aluno</button>
-                <button class="btn btn-secondary" onclick="acaoForm(filtrar)">🔍 Buscar</button>
                 <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
         </form>
@@ -94,7 +84,6 @@
                         <th>Turma</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
-                        <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -106,13 +95,6 @@
                             <td>{{aluno.turma}}</td>
                             <td>{{aluno.email}}</td>
                             <td>{{aluno.telefone}}</td>
-                            {%if aluno.status == 'ativo'%}
-                                <td><span class="status-badge status-ativo">{{aluno.status}}</span></td>
-                            {%elif aluno.status == 'inativo'%}
-                                <td><span class="status-badge status-inativo">{{aluno.status}}</span></td>
-                            {%elif aluno.status == 'pendente'%}
-                            <td><span class="status-badge status-pendente">{{aluno.status}}</span></td>
-                            {%endif%}
                             <td>
                                 <button class="action-btn" onclick="abrirModal(
                                     '{{ aluno.matricula }}',
@@ -120,7 +102,6 @@
                                     '{{ aluno.turma }}',
                                     '{{ aluno.email }}',
                                     '{{ aluno.telefone }}',
-                                    '{{ aluno.status }}'
                                   )">✏️ Editar</button>
                                 <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button>
                             </td>
@@ -156,9 +137,6 @@
       
             <label for="telefone">Telefone:</label>
             <input type="tel" id="telefone" name="telefone">
-      
-            <label for="status">Status:</label>
-            <input type="text" id="status" name="status">
       
             <button type="button" class="btn-salvar" onclick="salvarAluno()">Salvar</button>
           </form>

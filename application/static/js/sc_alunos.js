@@ -1,42 +1,9 @@
-// function editarAluno(matricula) {
-//         fetch(`/alunos/${matricula}`)
-//             .then(res => res.json())
-//             .then(aluno => {
-//                 // Cria um formulário simples (ou pode abrir modal)
-//                 const nome = prompt("Nome:", aluno.nome);
-//                 const turma = prompt("Turma:", aluno.turma);
-//                 const email = prompt("Email:", aluno.email);
-//                 const telefone = prompt("Telefone:", aluno.telefone);
-//                 const status = prompt("Status (ativo/inativo/pendente):", aluno.status);
-    
-//                 // Atualiza o aluno
-//                 fetch(`/alunos/${matricula}`, {
-//                     method: "PUT",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify({
-//                         nome,
-//                         turma,
-//                         email,
-//                         telefone,
-//                         datanascimento: aluno.datanascimento,
-//                         status
-//                     })
-//                 })
-//                 .then(r => r.json())
-//                 .then(resp => {
-//                     alert(resp.message);
-//                     location.reload(); // recarrega a página para ver a atualização
-//                 });
-//             });
-//     }
-
-function abrirModal(matricula, nome, turma, email, telefone, status) {
+function abrirModal(matricula, nome, turma, email, telefone) {
     document.getElementById("matricula").value = matricula;
     document.getElementById("nome").value = nome;
     document.getElementById("turma").value = turma;
     document.getElementById("email").value = email;
     document.getElementById("telefone").value = telefone;
-    document.getElementById("status").value = status;
 
     document.getElementById("alunoModal").style.display = "block";
   }
@@ -54,7 +21,6 @@ function fecharModal() {
       turma: document.getElementById("turma").value,
       email: document.getElementById("email").value,
       telefone: document.getElementById("telefone").value,
-      status: document.getElementById("status").value
     };
 
     console.log("Aluno atualizado:", aluno);
@@ -68,4 +34,45 @@ function fecharModal() {
     if (event.target == modal) {
       modal.style.display = "none";
     }
+  }
+  async function salvarAluno() {
+    const aluno = {
+      matricula: document.getElementById("matricula").value,
+      nome: document.getElementById("nome").value,
+      turma: document.getElementById("turma").value,
+      email: document.getElementById("email").value,
+      telefone: document.getElementById("telefone").value,
+    };
+
+    try {
+      const resposta = await fetch('/atualizar_aluno', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(aluno)
+      });
+
+      const resultado = await resposta.json();
+      alert(resultado.mensagem);
+
+      // 🔹 Atualiza visualmente a linha da tabela (sem recarregar)
+      atualizarTabela(aluno);
+      fecharModal();
+    } catch (erro) {
+      console.error('Erro ao atualizar:', erro);
+      alert('Erro ao salvar as alterações.');
+    }
+  }
+
+  // Atualiza a tabela HTML diretamente com os novos valores
+  function atualizarTabela(aluno) {
+    const linhas = document.querySelectorAll("table tr");
+    linhas.forEach(linha => {
+      const celulaMatricula = linha.querySelector("td:first-child");
+      if (celulaMatricula && celulaMatricula.textContent.trim() === aluno.matricula) {
+        linha.cells[1].textContent = aluno.nome;
+        linha.cells[2].textContent = aluno.turma;
+        linha.cells[3].textContent = aluno.email;
+        linha.cells[4].textContent = aluno.telefone;
+      }
+    });
   }

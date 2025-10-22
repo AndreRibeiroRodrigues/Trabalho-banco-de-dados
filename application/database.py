@@ -102,3 +102,11 @@ def inserir_emprestimo(matricula, idlivro):
                     (matricula, idlivro, dataEmprestimo))
     conn.commit()
     conn.close()
+
+def atualizarAluno(matricula, nome, turma, email, telefone, status):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE ALUNOS SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, STATUS = ? WHERE MATRICULA = ?',
+                   (nome, turma, email, telefone, status, matricula))
+    conn.commit()
+    conn.close()

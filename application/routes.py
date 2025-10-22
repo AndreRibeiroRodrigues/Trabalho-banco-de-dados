@@ -24,65 +24,29 @@ def post_aluno():
     email = request.form.get('email')
     telefona = request.form.get('telefone')
     data = request.form.get('data')
-    status = request.form.get('status')
-
     acao = request.form.get('acao')
     if acao == 'inserir':
-        database.inserir_aluno(nome, matricula, turma, email, telefona, data, status)
+        database.inserir_aluno(nome, matricula, turma, email, telefona, data)
         return  redirect('/alunos')
     elif acao == 'filtrar':
         return  redirect('/alunos')
 
-# @bp.route('/alunos/<int:matricula>', methods=['GET'])
-# def get_aluno(matricula):
-#     conn = database.get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('SELECT * FROM ALUNOS WHERE MATRICULA = ?', (matricula,))
-#     colunas = [desc[0] for desc in cursor.description]
-#     aluno = cursor.fetchone()
-#     conn.close()
+@bp.route('/atualizar_aluno', methods=['POST'])
+def atualizar_aluno():
+    dados = request.get_json()
+
+    matricula = dados['matricula']
+    nome = dados['nome']
+    turma = dados['turma']
+    email = dados['email']
+    telefone = dados['telefone']
+    database.atualizarAluno(matricula, nome, turma, email, telefone)
     
-#     if aluno:
-#         return jsonify(dict(zip(colunas, aluno)))
-#     return jsonify({"error": "Aluno não encontrado"}), 404
 
-# @bp.route('/alunos/<int:matricula>', methods=['PUT'])
-# def edit_aluno(matricula):
-#     data = request.get_json()
-#     conn = database.get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('''
-#         UPDATE ALUNOS
-#         SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, DATANASCIMENTO = ?, STATUS = ?
-#         WHERE MATRICULA = ?
-#     ''', (data['nome'], data['turma'], data['email'], data['telefone'], data['datanascimento'], data['status'], matricula))
-    
-#     conn.commit()
-#     conn.close()
-#     return jsonify({"message": "Aluno atualizado com sucesso!"})
+    return jsonify({'mensagem': 'Aluno atualizado com sucesso!'})
 
-@bp.route('/editar_aluno/<int:matricula>', methods=['POST'])
-def editar_aluno(matricula):
-    nome = request.form['nome']
-    turma = request.form['turma']
-    email = request.form['email']
-    telefone = request.form['telefone']
-    status = request.form['status']
 
-    conn = database.get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        UPDATE ALUNOS 
-        SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, STATUS = ?
-        WHERE MATRICULA = ?
-    """, (nome, turma, email, telefone, status, matricula))
-
-    conn.commit()
-    conn.close()
-
-    return redirect('/alunos')
-    
+#Emprestimo
 @bp.route('/emprestimos')
 def emprestimos():
     alunos = database.get_alunos()
