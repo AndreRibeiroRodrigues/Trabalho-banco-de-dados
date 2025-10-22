@@ -9,29 +9,11 @@ bp = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
-
+#aluno
 @bp.route('/alunos')
 def alunos():
     alunos = database.get_alunos()
     return render_template('alunos.html', alunos=alunos)
-
-@bp.route('/emprestimos')
-def emprestimos():
-    alunos = database.get_alunos()
-    livros = database.get_livros()
-    emprestimos = database.get_emprestimos()
-
-    return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
-
-@bp.route('/livros')
-def livros():
-    livros = database.get_livros()
-    return render_template('livros.html', livros=livros)
-
-
-@bp.route('/relatorios')
-def relatorios():
-    return render_template('relatorios.html')
 
 @bp.route('/post_aluno', methods=['POST']) # type: ignore
 def post_aluno():
@@ -51,6 +33,64 @@ def post_aluno():
     elif acao == 'filtrar':
         return  redirect('/alunos')
 
+# @bp.route('/alunos/<int:matricula>', methods=['GET'])
+# def get_aluno(matricula):
+#     conn = database.get_connection()
+#     cursor = conn.cursor()
+#     cursor.execute('SELECT * FROM ALUNOS WHERE MATRICULA = ?', (matricula,))
+#     colunas = [desc[0] for desc in cursor.description]
+#     aluno = cursor.fetchone()
+#     conn.close()
+    
+#     if aluno:
+#         return jsonify(dict(zip(colunas, aluno)))
+#     return jsonify({"error": "Aluno não encontrado"}), 404
+
+# @bp.route('/alunos/<int:matricula>', methods=['PUT'])
+# def edit_aluno(matricula):
+#     data = request.get_json()
+#     conn = database.get_connection()
+#     cursor = conn.cursor()
+#     cursor.execute('''
+#         UPDATE ALUNOS
+#         SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, DATANASCIMENTO = ?, STATUS = ?
+#         WHERE MATRICULA = ?
+#     ''', (data['nome'], data['turma'], data['email'], data['telefone'], data['datanascimento'], data['status'], matricula))
+    
+#     conn.commit()
+#     conn.close()
+#     return jsonify({"message": "Aluno atualizado com sucesso!"})
+
+@bp.route('/editar_aluno/<int:matricula>', methods=['POST'])
+def editar_aluno(matricula):
+    nome = request.form['nome']
+    turma = request.form['turma']
+    email = request.form['email']
+    telefone = request.form['telefone']
+    status = request.form['status']
+
+    conn = database.get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE ALUNOS 
+        SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, STATUS = ?
+        WHERE MATRICULA = ?
+    """, (nome, turma, email, telefone, status, matricula))
+
+    conn.commit()
+    conn.close()
+
+    return redirect('/alunos')
+    
+@bp.route('/emprestimos')
+def emprestimos():
+    alunos = database.get_alunos()
+    livros = database.get_livros()
+    emprestimos = database.get_emprestimos()
+
+    return render_template('emprestimos.html', emprestimos=emprestimos,livros=livros, alunos=alunos)
+
 @bp.route('/post_emprestimo', methods=['POST'])
 def post_emprestimo():
     matricula = request.form.get('aluno')
@@ -63,5 +103,18 @@ def post_emprestimo():
         return redirect('/emprestimos')
     else:
         return redirect('/emprestimos')
+@bp.route('/livros')
+def livros():
+    livros = database.get_livros()
+    return render_template('livros.html', livros=livros)
+
+
+@bp.route('/relatorios')
+def relatorios():
+    return render_template('relatorios.html')
+
+
+
+
 
 

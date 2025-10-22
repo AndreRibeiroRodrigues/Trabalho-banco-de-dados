@@ -1,80 +1,71 @@
-        // async function acaoForm(acao) {
-        // //     const formData = {
-        // //         nome : document.querySelector('[name="nome"]').value,
-        // //         matricula : document.querySelector('[name="matricula"]').value,
-        // //         turma : document.querySelector('[name="truma"]').value,
-        // //         email : document.querySelector('[name="email"]').value,
-        // //         telefone : document.querySelector('[name="telefone"]').value,
-        // //         dataNascimento : document.querySelector('[name="data"]').value,
-        // //         status : document.querySelector('[name="status"]').value,
-        // //         acao: acao
-        // //     }
+// function editarAluno(matricula) {
+//         fetch(`/alunos/${matricula}`)
+//             .then(res => res.json())
+//             .then(aluno => {
+//                 // Cria um formulário simples (ou pode abrir modal)
+//                 const nome = prompt("Nome:", aluno.nome);
+//                 const turma = prompt("Turma:", aluno.turma);
+//                 const email = prompt("Email:", aluno.email);
+//                 const telefone = prompt("Telefone:", aluno.telefone);
+//                 const status = prompt("Status (ativo/inativo/pendente):", aluno.status);
+    
+//                 // Atualiza o aluno
+//                 fetch(`/alunos/${matricula}`, {
+//                     method: "PUT",
+//                     headers: { "Content-Type": "application/json" },
+//                     body: JSON.stringify({
+//                         nome,
+//                         turma,
+//                         email,
+//                         telefone,
+//                         datanascimento: aluno.datanascimento,
+//                         status
+//                     })
+//                 })
+//                 .then(r => r.json())
+//                 .then(resp => {
+//                     alert(resp.message);
+//                     location.reload(); // recarrega a página para ver a atualização
+//                 });
+//             });
+//     }
 
-        //     const resposta = await fetch("/post_aluno", {
-        //        method: 'POST',
-        //        headers: {
-        //         "content-type": "application/json"
-        // },
-        //        body: JSON.stringify({
-        //         nome : document.querySelector('[name="nome"]').value,
-        //         matricula : document.querySelector('[name="matricula"]').value,
-        //         turma : document.querySelector('[name="truma"]').value,
-        //         email : document.querySelector('[name="email"]').value,
-        //         telefone : document.querySelector('[name="telefone"]').value,
-        //         dataNascimento : document.querySelector('[name="data"]').value,
-        //         status : document.querySelector('[name="status"]').value,
-        //         acao: acao
-        //        })
-        //     });
+function abrirModal(matricula, nome, turma, email, telefone, status) {
+    document.getElementById("matricula").value = matricula;
+    document.getElementById("nome").value = nome;
+    document.getElementById("turma").value = turma;
+    document.getElementById("email").value = email;
+    document.getElementById("telefone").value = telefone;
+    document.getElementById("status").value = status;
 
-        //     const resultado = await resposta.json();
-        //     alert(resultado.message);
-        // }
+    document.getElementById("alunoModal").style.display = "block";
+  }
 
-        // function buscarAlunos() {
-        //     const nome = document.getElementById('nome').value.toLowerCase();
-        //     const matricula = document.getElementById('matricula').value.toLowerCase();
-        //     const turma = document.getElementById('turma').value;
-        //     const status = document.getElementById('status').value;
+  // Fecha o modal
+function fecharModal() {
+    document.getElementById("alunoModal").style.display = "none";
+  }
 
-        //     const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
-            
-        //     linhas.forEach(linha => {
-        //         const nomeAluno = linha.cells[1].textContent.toLowerCase();
-        //         const matriculaAluno = linha.cells[0].textContent.toLowerCase();
-        //         const turmaAluno = linha.cells[2].textContent.toLowerCase();
-        //         const statusAluno = linha.cells[6].textContent.toLowerCase();
+  // Salva (exemplo)
+  function salvarAluno() {
+    const aluno = {
+      matricula: document.getElementById("matricula").value,
+      nome: document.getElementById("nome").value,
+      turma: document.getElementById("turma").value,
+      email: document.getElementById("email").value,
+      telefone: document.getElementById("telefone").value,
+      status: document.getElementById("status").value
+    };
 
-        //         const matchNome = !nome || nomeAluno.includes(nome);
-        //         const matchMatricula = !matricula || matriculaAluno.includes(matricula);
-        //         const matchTurma = !turma || turmaAluno.includes(turma);
-        //         const matchStatus = !status || statusAluno.includes(status);
+    console.log("Aluno atualizado:", aluno);
+    alert("Dados salvos (simulação).");
+    fecharModal();
+  }
 
-        //         if (matchNome && matchMatricula && matchTurma && matchStatus) {
-        //             linha.style.display = '';
-        //         } else {
-        //             linha.style.display = 'none';
-        //         }
-        //     });
-        // }
-
-        // function limparFiltros() {
-        //     document.getElementById('nome').value = '';
-        //     document.getElementById('matricula').value = '';
-        //     document.getElementById('turma').value = '';
-        //     document.getElementById('email').value = '';
-        //     document.getElementById('telefone').value = '';
-        //     document.getElementById('dataNascimento').value = '';
-        //     document.getElementById('status').value = '';
-            
-        //     const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
-        //     linhas.forEach(linha => linha.style.display = '');
-        // }
-
-        // function editarAluno(id) {
-        //     alert('Editar aluno ID: ' + id);
-        // }
-
-        // function verHistorico(id) {
-        //     alert('Visualizar histórico de empréstimos do aluno ID: ' + id);
-        // }
+  // Fecha ao clicar fora
+  window.onclick = function(event) {
+    let modal = document.getElementById("alunoModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
