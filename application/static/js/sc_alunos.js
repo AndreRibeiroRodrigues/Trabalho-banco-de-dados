@@ -76,3 +76,33 @@ function fecharModal() {
       }
     });
   }
+  async function deletarAluno(matricula) {
+    if (!confirm(`Confirma a exclusão do aluno com matrícula ${matricula}?`)) {
+      return;
+    }
+    try {
+      const resposta = await fetch('/deletar_aluno', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ matricula })
+      });
+      const resultado = await resposta.json();
+      alert(resultado.mensagem);
+      // Remove a linha da tabela
+      removerLinhaTabela(matricula);
+    } catch (erro) {
+      console.error('Erro ao deletar:', erro);
+      alert('Erro ao deletar o aluno.');
+    }
+  }
+
+  // Remove a linha da tabela HTML
+  function removerLinhaTabela(matricula) {
+    const linhas = document.querySelectorAll("table tr");
+    linhas.forEach(linha => {
+      const celulaMatricula = linha.querySelector("td:first-child");
+      if (celulaMatricula && celulaMatricula.textContent.trim() === matricula) {
+        linha.remove();
+      }
+    });
+  }

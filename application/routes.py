@@ -19,7 +19,7 @@ def alunos():
 def post_aluno():
     nome = request.form.get('nome')
     matricula = request.form.get('matricula')
-    turma =request.form.get('turma').split('-')
+    turma =request.form.get('turma').split('-') # type: ignore
     turma = f"{turma[0]}º Ano{turma[1].upper()}"
     email = request.form.get('email')
     telefona = request.form.get('telefone')
@@ -45,6 +45,17 @@ def atualizar_aluno():
 
     return jsonify({'mensagem': 'Aluno atualizado com sucesso!'})
 
+@bp.route('/deletar_aluno', methods=['POST'])
+def deletar_aluno():
+    dados = request.get_json()
+    matricula = dados['matricula']
+    conn = database.get_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM ALUNOS WHERE MATRICULA = ?', (matricula,))
+    conn.commit()
+    conn.close()
+    return jsonify({'mensagem': 'Aluno deletado com sucesso!'})
+
 
 #Emprestimo
 @bp.route('/emprestimos')
@@ -67,11 +78,42 @@ def post_emprestimo():
         return redirect('/emprestimos')
     else:
         return redirect('/emprestimos')
+    
+#livro
 @bp.route('/livros')
 def livros():
     livros = database.get_livros()
     return render_template('livros.html', livros=livros)
 
+@bp.route('/post_livro', methods=['POST'])
+def adicionar_livro():
+    titulo = request.form.get('titulo')
+    autor = request.form.get('autor')
+    isbn = request.form.get('isbn')
+    categoria = request.form.get('categoria')
+    ano = request.form.get('ano')
+    database.add_livro(titulo, autor, isbn, categoria, ano)
+    return redirect('/livros')
+
+@bp.route('/livros/editar/<int:id>', methods=['PUT'])
+def editar_livro(id):
+    dados = request.get_json()
+    titulo = dados['titulo']
+    autor = dados['autor']
+    isbn = dados['isbn']
+    categoria = dados['categoria']
+    ano = dados['ano']
+    database.atualizar_livro(id, titulo, autor, isbn, categoria, ano)
+    return jsonify({"message": "Livro atualizado com sucesso!"})
+
+@bp.route('/livros/excluir/<int:id>', methods=['DELETE'])
+def excluir_livro(id):
+    conn = database.get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM LIVROS WHERE ID = ?", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Livro excluído com sucesso!"})
 
 @bp.route('/relatorios')
 def relatorios():

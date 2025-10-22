@@ -71,7 +71,6 @@
             </div>
             <div class="controls-row" style="margin-top: 1rem;">
                 <button class="btn" type="submit" name="acao" value="inserir" >+ Cadastrar Aluno</button>
-                <button class="btn btn-secondary" onclick="limparFiltros()">✖ Limpar</button>
             </div>
         </form>
 <!-- fim do form -->
@@ -103,7 +102,8 @@
                                     '{{ aluno.email }}',
                                     '{{ aluno.telefone }}',
                                   )">✏️ Editar</button>
-                                <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button>
+                            <button class="action-btn" onclick="deletarAluno('{{aluno.matricula}}')">🗑️ Deletar</button>
+                            <!-- <button class="action-btn" onclick="verHistorico(1)">📋 Histórico</button> -->
                             </td>
                         </tr>
                     {%endfor%}

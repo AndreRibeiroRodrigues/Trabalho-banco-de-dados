@@ -1,61 +1,78 @@
-function adicionarLivro() {
-    const titulo = document.getElementById('titulo').value;
-    const autor = document.getElementById('autor').value;
-    const isbn = document.getElementById('isbn').value;
-    const categoria = document.getElementById('categoria').value;
+function editarLivro(id, titulo, autor, isbn, categoria, ano) {
+  document.getElementById("edit-id").value = id;
+  document.getElementById("edit-titulo").value = titulo;
+  document.getElementById("edit-autor").value = autor;
+  document.getElementById("edit-isbn").value = isbn;
+  document.getElementById("edit-categoria").value = categoria;
+  document.getElementById("edit-ano").value = ano;
+//   document.getElementById("edit-status").value = status;
 
-    if (!titulo || !autor) {
-        alert('Por favor, preencha pelo menos o título e o autor do livro.');
+  document.getElementById("livroModal").style.display = "block";
+}
+
+function fecharModal() {
+  document.getElementById("livroModal").style.display = "none";
+}
+
+// Fechar clicando fora
+window.onclick = function(event) {
+  const modal = document.getElementById("livroModal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+async function salvarEdicao() {
+  const livro = {
+    id: document.getElementById("edit-id").value,
+    titulo: document.getElementById("edit-titulo").value,
+    autor: document.getElementById("edit-autor").value,
+    isbn: document.getElementById("edit-isbn").value,
+    categoria: document.getElementById("edit-categoria").value,
+    ano: document.getElementById("edit-ano").value,
+    // status: document.getElementById("edit-status").value
+  };
+
+  const response = await fetch(`/livros/editar/${livro.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(livro)
+  });
+
+  const result = await response.json();
+  if (response.ok) {
+    alert(result.message);
+    atualizarLinhaTabela(livro);
+    fecharModal();
+  } else {
+    alert("Erro ao editar livro!");
+  }
+}
+
+// Atualiza visualmente a tabela
+function atualizarLinhaTabela(livro) {
+  const linha = document.querySelector(`#livro-${livro.id}`);
+  if (!linha) return;
+
+  linha.cells[1].textContent = livro.titulo;
+  linha.cells[2].textContent = livro.autor;
+  linha.cells[3].textContent = livro.isbn;
+  linha.cells[4].textContent = livro.categoria;
+  linha.cells[5].textContent = livro.ano;
+//   linha.cells[6].textContent = livro.status;
+}
+async function excluirLivro(id) {
+    if (!confirm("Tem certeza que deseja excluir este livro?")) {
         return;
     }
-
-    alert('Livro adicionado com sucesso!\n\nTítulo: ' + titulo + '\nAutor: ' + autor);
-    limparFiltros();
-}
-
-function buscarLivros() {
-    const titulo = document.getElementById('titulo').value.toLowerCase();
-    const autor = document.getElementById('autor').value.toLowerCase();
-    const isbn = document.getElementById('isbn').value.toLowerCase();
-    const categoria = document.getElementById('categoria').value;
-
-    const linhas = document.querySelectorAll('#tabelaLivros tbody tr');
-
-    linhas.forEach(linha => {
-        const tituloLivro = linha.cells[1].textContent.toLowerCase();
-        const autorLivro = linha.cells[2].textContent.toLowerCase();
-        const isbnLivro = linha.cells[3].textContent.toLowerCase();
-        const categoriaLivro = linha.cells[4].textContent.toLowerCase();
-
-        const matchTitulo = !titulo || tituloLivro.includes(titulo);
-        const matchAutor = !autor || autorLivro.includes(autor);
-        const matchIsbn = !isbn || isbnLivro.includes(isbn);
-        const matchCategoria = !categoria || categoriaLivro.includes(categoria);
-
-        if (matchTitulo && matchAutor && matchIsbn && matchCategoria) {
-            linha.style.display = '';
-        } else {
-            linha.style.display = 'none';
-        }
+    const response = await fetch(`/livros/excluir/${id}`, {
+        method: "DELETE"
     });
-}
-
-function limparFiltros() {
-    document.getElementById('titulo').value = '';
-    document.getElementById('autor').value = '';
-    document.getElementById('isbn').value = '';
-    document.getElementById('categoria').value = '';
-
-    const linhas = document.querySelectorAll('#tabelaLivros tbody tr');
-    linhas.forEach(linha => linha.style.display = '');
-}
-
-function editarLivro(id) {
-    alert('Editar livro ID: ' + id);
-}
-
-function excluirLivro(id) {
-    if (confirm('Tem certeza que deseja excluir este livro?')) {
-        alert('Livro ID ' + id + ' excluído com sucesso!');
+    const result = await response.json();
+    if (response.ok) {
+        alert(result.message);
+        document.querySelector(`#livro-${id}`).remove();
+    } else {
+        alert("Erro ao excluir livro!");
     }
 }

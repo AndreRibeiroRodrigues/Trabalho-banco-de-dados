@@ -44,7 +44,7 @@ def inserir_dados():
     conn.commit()
     conn.close()
 
-#função para pegar os alunos do banco de dados
+#alunos
 def get_alunos():
     conn = get_connection()
     cursor = conn.cursor()
@@ -53,6 +53,24 @@ def get_alunos():
     conn.close()
     return alunos
 
+def inserir_aluno(nome, matricula, turma, email, telefone, data):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO ALUNOS (NOME, MATRICULA, TURMA, EMAIL, TELEFONE, DATANASCIMENTO) VALUES (?, ?, ?, ?, ?, ?)',
+                   (nome, matricula, turma, email, telefone, data))
+    conn.commit()
+    conn.close()
+
+def atualizarAluno(matricula, nome, turma, email, telefone):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''UPDATE ALUNOS SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ? 
+                      WHERE MATRICULA = ?''',
+                   (nome, turma, email, telefone, matricula))
+    conn.commit()
+    conn.close()
+
+#livros
 def get_livros():
     conn = get_connection()
     cursor = conn.cursor()
@@ -61,6 +79,27 @@ def get_livros():
     conn.close()
     return livros
 
+def add_livro(titulo, autor, isbn, categoria, ano):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO LIVROS (TITULO, AUTOR, ISBN, CATEGORIA, ANO)
+        VALUES (?, ?, ?, ?, ?)
+    """, (titulo, autor, isbn, categoria, ano))
+    conn.commit()
+    conn.close()
+
+def atualizar_livro(id, titulo, autor, isbn, categoria, ano):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE LIVROS
+        SET TITULO = ?, AUTOR = ?, ISBN = ?, CATEGORIA = ?, ANO = ?
+        WHERE ID = ?
+    """, (titulo, autor, isbn, categoria, ano, id))
+    conn.commit()
+    conn.close()  
+#emprestimos
 def get_emprestimos():
     conn = get_connection()
     cursor = conn.cursor()
@@ -86,13 +125,7 @@ def get_emprestimos():
     conn.close()
     return emprestimos
 
-def inserir_aluno(nome, matricula, turma, email, telefone, data, status):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO ALUNOS (NOME, MATRICULA, TURMA, EMAIL, TELEFONE, DATANASCIMENTO, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                   (nome, matricula, turma, email, telefone, data, status))
-    conn.commit()
-    conn.close
+
 
 def inserir_emprestimo(matricula, idlivro):
     dataEmprestimo = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -103,10 +136,3 @@ def inserir_emprestimo(matricula, idlivro):
     conn.commit()
     conn.close()
 
-def atualizarAluno(matricula, nome, turma, email, telefone, status):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('UPDATE ALUNOS SET NOME = ?, TURMA = ?, EMAIL = ?, TELEFONE = ?, STATUS = ? WHERE MATRICULA = ?',
-                   (nome, turma, email, telefone, status, matricula))
-    conn.commit()
-    conn.close()
