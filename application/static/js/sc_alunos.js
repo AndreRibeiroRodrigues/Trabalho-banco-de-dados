@@ -1,7 +1,7 @@
 function abrirModal(matricula, nome, turma, email, telefone) {
     document.getElementById("matricula").value = matricula;
     document.getElementById("nome").value = nome;
-    document.getElementById("turma").value = turma;
+    document.getElementById("modal-turma").value = turma;
     document.getElementById("email").value = email;
     document.getElementById("telefone").value = telefone;
 
@@ -18,7 +18,7 @@ function fecharModal() {
     const aluno = {
       matricula: document.getElementById("matricula").value,
       nome: document.getElementById("nome").value,
-      turma: document.getElementById("turma").value,
+      turma: document.getElementById("modal-turma").value,
       email: document.getElementById("email").value,
       telefone: document.getElementById("telefone").value,
     };
@@ -39,7 +39,7 @@ function fecharModal() {
     const aluno = {
       matricula: document.getElementById("matricula").value,
       nome: document.getElementById("nome").value,
-      turma: document.getElementById("turma").value,
+      turma: document.getElementById("modal-turma").value,
       email: document.getElementById("email").value,
       telefone: document.getElementById("telefone").value,
     };
