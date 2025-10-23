@@ -20,7 +20,6 @@
             <li><a href="{{url_for('main.livros')}}">Livros</a></li>
             <li><a href="{{url_for('main.emprestimos')}}" class="active">Empréstimos</a></li>
             <li><a href="{{url_for('main.alunos')}}">Alunos</a></li>
-            <li><a href="{{url_for('main.relatorios')}}">Relatórios</a></li>
         </ul>
     </nav>
 
@@ -33,7 +32,6 @@
                     <label for="aluno">Aluno</label>
                     <select name="aluno">
                         <option value="">Selecione um aluno</option>
-                        <option value="1">Maria Silva - 001</option>
                         {%for aluno in alunos%}
                         <option value="{{aluno.matricula}}">{{aluno.nome}} - {{aluno.matricula}}</option>
                         {%endfor%}
@@ -43,7 +41,6 @@
                     <label for="livro">Livro</label>
                     <select name="livro">
                         <option value="">Selecione um livro</option>
-                        <option value="1">Dom Casmurro</option>
                         {%for livro in livros%}
                         <option value="{{livro.id}}">{{livro.titulo}}</option>
                         {%endfor%}
@@ -69,8 +66,7 @@
                 </thead>
                 <tbody>
                     {%for emprestimo in emprestimos%}
-                    <form action="submit">
-                        <tr>
+                        <tr id="emprestimo-{{ emprestimo.id_emprestimo }}">
                             <td>{{emprestimo.id_emprestimo}}</td>
                             <td>{{emprestimo.Aluno}}</td>
                             <td>{{emprestimo.Livro}}</td>
@@ -81,9 +77,9 @@
                             <td>{{emprestimo.dataDevolucao}}</td>
                             {%endif%}
                             <td>
-                                <button class="action-btn" onclick="devolverEmprestimo('{{ emprestimo.id_emprestimo }}')">✓ Devolver</button>                            </td>
+                                <button type="button" class="action-btn" onclick="devolverEmprestimo('{{ emprestimo.id_emprestimo }}')">✓ Devolver</button>
+                            </td>
                         </tr>
-                    </form>
                     {%endfor%}
                 </tbody>
             </table>

@@ -1,5 +1,5 @@
-async function devolverEmprestimo(id) {
-  if (!confirm("Tem certeza que deseja marcar este empréstimo como devolvido?")) return;
+﻿async function devolverEmprestimo(id) {
+  if (!confirm("Tem certeza que deseja marcar este emprÃ©stimo como devolvido?")) return;
 
   try {
     const response = await fetch(`/emprestimos/devolver/${id}`, {
@@ -18,9 +18,8 @@ async function devolverEmprestimo(id) {
 
       // Atualiza a linha visualmente (opcional)
       const linha = document.getElementById(`emprestimo-${id}`);
-      if (linha && linha.cells && linha.cells.length >= 5) {
-        const hoje = new Date().toISOString().slice(0, 10);
-        linha.cells[4].textContent = hoje;
+      if (linha) {
+        linha.cells[6].textContent = "Devolvido";
       }
     } else {
       alert("Erro ao devolver: " + result.message);

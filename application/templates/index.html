@@ -18,11 +18,37 @@
             <li><a href="{{url_for('main.livros')}}">Livros</a></li>
             <li><a href="{{url_for('main.emprestimos')}}">Empréstimos</a></li>
             <li><a href="{{url_for('main.alunos')}}">Alunos</a></li>
-            <li><a href="{{url_for('main.relatorios')}}">Relatórios</a></li>
         </ul>
     </nav>
 
     <div class="container">
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de Livros</h3>
+                <div class="stat-number">{{livros}}</div>
+                <p class="stat-label">no acervo</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Empréstimos Ativos</h3>
+                <div class="stat-number">{{emprestimos}}</div>
+                <p class="stat-label">em circulação</p>
+            </div>
+
+            <!-- <div class="stat-card">
+                <h3>Livros Atrasados</h3>
+                <div class="stat-number">8</div>
+                <p class="stat-label">pendentes de devolução</p>
+            </div> -->
+
+            <div class="stat-card">
+                <h3>Alunos Cadastrados</h3>
+                <div class="stat-number">{{alunos}}</div>
+                <p class="stat-label">usuários ativos</p>
+            </div>
+        </div>
+
         <h2 class="section-title">Equipe de Desenvolvimento</h2>
         
         <div class="team-grid">

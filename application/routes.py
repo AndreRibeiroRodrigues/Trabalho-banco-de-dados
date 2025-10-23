@@ -7,7 +7,25 @@ bp = Blueprint('main', __name__)
 @bp.route('/')
 @bp.route('/apresentacao')
 def index():
-    return render_template('index.html')
+    conn = database.get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM LIVROS')
+    livros = cursor.fetchone()[0]
+    conn.close()
+
+    conn = database.get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM ALUNOS')
+    alunos= cursor.fetchone()[0]
+    conn.close()
+
+    conn = database.get_connection()
+    cursor = conn.cursor() 
+    cursor.execute('SELECT COUNT(*) FROM EMPRESTIMOS')
+    emprestimos= cursor.fetchone()[0]
+    conn.close()
+
+    return render_template('index.html', livros=livros, alunos=alunos, emprestimos=emprestimos)
 
 #aluno
 @bp.route('/alunos')
@@ -118,12 +136,6 @@ def excluir_livro(id):
     conn.commit()
     conn.close()
     return jsonify({"message": "Livro excluído com sucesso!"})
-
-@bp.route('/relatorios')
-def relatorios():
-    return render_template('relatorios.html')
-
-
 
 
 
