@@ -45,7 +45,7 @@ def inserir_dados():
     conn.close()
 
 #alunos
-def get_alunos():
+def listar_alunos():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM  ALUNOS')
@@ -53,11 +53,12 @@ def get_alunos():
     conn.close()
     return alunos
 
-def inserir_aluno(nome, matricula, turma, email, telefone, data):
+def cadastrar_aluno(aluno):
+    print(aluno)
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO ALUNOS (NOME, MATRICULA, TURMA, EMAIL, TELEFONE, DATANASCIMENTO) VALUES (?, ?, ?, ?, ?, ?)',
-                   (nome, matricula, turma, email, telefone, data))
+                   (aluno['nome'], aluno['matricula'],  aluno['turma'], aluno['email'], aluno['telefone'], aluno['dataNascimento']))
     conn.commit()
     conn.close()
 
